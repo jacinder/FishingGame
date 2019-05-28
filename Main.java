@@ -94,7 +94,7 @@ class Main {
         rod.setPrice(selectRod);
       	int currentMoney= user.getMoney() - rod.getPrice();
         user.setMoney(currentMoney);
-      	System.out.println(rod.getName() + "을 구매하셨습니다");
+      	System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");
       	break;
 
       case 3: //저장하기
@@ -139,7 +139,7 @@ class Main {
       System.exit(0);
     }
     Scanner keyboard= new Scanner(System.in);
-    outputStream.println(user.getName() + user.getMoney() + user.getRodLevel());
+    outputStream.println(user.getMoney() + user.getRodLevel());
     outputStream.close();
 
     System.out.println("저장 완료");
