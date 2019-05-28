@@ -73,7 +73,7 @@ class Main {
       //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
         int randomInt = random.nextInt(fishArray.length -1);
         double fishWeight = 10 * random.nextDouble() + 1;
-        int fishPrice = (int)(fishWeight * 1000);
+        int fishPrice = (int)(fishWeight * 1000 * user.getRodLevel());
         Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
 
         	//낚시 실패하면
@@ -109,6 +109,7 @@ class Main {
       	System.exit(0);
       	break;
       }//switch문 닫는 괄호
+      if(user.getMoney() >= 3000000) gameEND = true;
     }//while문 닫는 괄호
   }//main함수 닫는 괄호
 
