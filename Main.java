@@ -68,23 +68,41 @@ class Main {
       menu = keyboard.nextInt();
       // 콘솔창 clear
       switch(menu){
-      case 1: // 낚시하러
+      case 1: // 낚시하러 수정해야할 것: 초반에 돈이 없어서 프라이스 가격이 안만들어지네요ㅜ
       //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
         int randomInt = random.nextInt(fishArray.length -1);
         double fishWeight = 10 * random.nextDouble() + 1;
         int fishPrice = (int)(fishWeight * 1000 * user.getRodLevel());
         Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
+        Fishing fishing = new Fishing();
+              
+        try
+          {
+              if(!fishing.getInput()){//낚시 실패하면
+                  System.out.println("놓친 어종: " + fishArray[randomInt]);
+                  System.out.println("무게: " +fishWeight);
+                  System.out.println("가격: " +fishPrice);
+                  
+              }else{ //낚시 성공시
+                  System.out.println("잡힌 어종: " + fishArray[randomInt]);
+                  System.out.println("무게: " +fishWeight + "g");
+                  System.out.println("가격: " +fishPrice+ "원");
+              }
+              
+          }
+              catch(Exception e)
+          {
+              System.out.println(e);
+          }
+              System.out.println( "낚시가 끝났습니다!" );
+              
+              
 
-        //낚시 실패하면
-        System.out.println(fishArray[randomInt] + "를 낚는 데 실패했습니다… T.T");
-
-        //낚시 성공하면
-        System.out.println(fishArray[randomInt] + "를 낚는 데 성공했습니다! O.O");
-        user.sell(fish);
+       
 
         break;
 
-      case 2: // 상점으로
+      case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
 
       	Rod rod = new Rod ();
       	rod.messageStore();
@@ -93,8 +111,11 @@ class Main {
         rod.setName(selectRod);
         rod.setPrice(selectRod);
       	int currentMoney= user.getMoney() - rod.getPrice();
-        user.setMoney(currentMoney);
-      	System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");
+        if(currentMoney <0){
+            System.out.println("돈이 부족합니다.");
+        }else{
+            user.setMoney(currentMoney);
+            System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");}
       	break;
 
       case 3: //저장하기
