@@ -22,7 +22,4 @@ public class User{
 	public void sell(Fish fish){
 		 money += fish.getfishPrice();
 	}
-    public String getName(){
-        return name;
-    }
 }
