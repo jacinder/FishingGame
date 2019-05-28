@@ -19,4 +19,7 @@ public class User{
 	public int getRodLevel(){
 		return rodLevel;
 	}
+	public void sell(Fish fish){
+		 money += getfishPrice();
+	}
 }
