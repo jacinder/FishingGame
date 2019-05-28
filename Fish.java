@@ -1,17 +1,14 @@
-public class Fish(){
-   private String fishName;
-   private int fishPrice;
-   private double fishWeight;
+public class Fish{
+	private String fishName;
+	private int fishPrice;
+	private double fishWeight;
 
-   Fish(String fishName, double fishWeight, int fishPrice){
+	Fish(String fishName, double fishWeight, int fishPrice){
       this.fishName = fishName;
       this.fishWeight = fishWeight;
       this.fishPrice = fishPrice;
    }
    public int getfishPrice(){
       return fishPrice;
-   }
-   public void sell(User user){
-      user.setMoney(user.getMoney() + fishPrice);
    }
 }
