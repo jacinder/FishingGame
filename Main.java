@@ -11,7 +11,6 @@ class Main {
     String fileName= "user.txt";
     Scanner keyboard = new Scanner(System.in);
     Random random = new Random();
-    int menu_num;
 
     //물고기 배열
     String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우" };
@@ -76,10 +75,10 @@ class Main {
         int fishPrice = (int)(fishWeight * 1000 * user.getRodLevel());
         Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
 
-        	//낚시 실패하면
+        //낚시 실패하면
         System.out.println(fishArray[randomInt] + "를 낚는 데 실패했습니다… T.T");
 
-        	//낚시 성공하면
+        //낚시 성공하면
         System.out.println(fishArray[randomInt] + "를 낚는 데 성공했습니다! O.O");
         user.sell(fish);
 
@@ -109,8 +108,16 @@ class Main {
       	System.exit(0);
       	break;
       }//switch문 닫는 괄호
-      if(user.getMoney() >= 3000000) gameEND = true;
+      if(user.getMoney() >= 30000) gameEND = true;
     }//while문 닫는 괄호
+
+
+    System.out.println("\n\n부족한 학비를 모으기 위해 낚시를 시작한 " + userName + "은 학비를 다 모은 후 학교로 돌아가고. . .\n");
+    System.out.println("그렇게 낚시계의 전설로 남게되었다. . .\n\n\n");
+    System.out.println("\tT  H  E\n");
+    System.out.println("\tE  N  D");
+
+
   }//main함수 닫는 괄호
 
   public void fishing(){ //낚시하기
