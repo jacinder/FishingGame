@@ -56,7 +56,7 @@ public class Fishing{
         System.out.println( "낚시를 시작하겠습니다!" );
         System.out.println( "\n '!' 가 뜨면, 'f' 를 입력하여 주세요!");
 
-        timer2.schedule(task2, 2000,1000); //표시하기 위한 2초뒤에 출력 0.5초당 . 혹은 !를 출력 5초안에 입질이 온다.
+        timer2.schedule(task2, 2000,800); //표시하기 위한 2초뒤에 출력 0.5초당 . 혹은 !를 출력 5초안에 입질이 온다.
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         str = in.readLine();
