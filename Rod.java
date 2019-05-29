@@ -2,14 +2,6 @@ class Rod{
     private String rodName;
     private int rodPrice;
 
-
-    public int getPrice(){
-		return rodPrice;
-	}
-
-    public String getName(){
-        return rodName;
-    }
     public void setPrice(int selectRod){
         if(selectRod == 1)
             this.rodPrice = 10000;
@@ -17,9 +9,12 @@ class Rod{
             this.rodPrice = 100000;
         if(selectRod == 3)
             this.rodPrice = 1000000;
-
-
     }
+
+    public int getPrice(){
+		return rodPrice;
+	}
+
     public void setName(int selectRod){
         if(selectRod == 1)
             this.rodName = "초급";
@@ -27,8 +22,12 @@ class Rod{
             this.rodName = "중급";
         if(selectRod == 3)
             this.rodName = "고급";
-
     }
+    
+    public String getName(){
+        return rodName;
+    }
+
     public void messageStore(){
         System.out.println("상점에 오신 것을 환영합니다.");
         System.out.println("어떤 낚시대를 원하십니까?");
