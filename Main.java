@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.File;
 
 class Main {
   public static void main(String[] args) {
@@ -21,11 +22,10 @@ class Main {
     File file = new File(fileName);
     try{
       Scanner sc = new Scanner(file);
-	  String buffer = sc.nextLine();
+	    String buffer = sc.nextLine();
       money =  Integer.parseInt(buffer); //돈
-	  buffer = sc.nextLine();
+	    buffer = sc.nextLine();
       rodLevel = Integer.parseInt(buffer); //로드레벨
-
       sc.close();
     }//try문 닫는 괄호
     catch(FileNotFoundException e){
