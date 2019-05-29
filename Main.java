@@ -11,39 +11,28 @@ class Main {
     String fileName= "user.txt";
     Scanner keyboard = new Scanner(System.in);
     Random random = new Random();
+    int money = 0, rodLevel = 1;
 
     //물고기 배열
     String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우", "붕어", "참치", "고등어", "꽁치"};
     //이야기의 시작
-	System.out.print("당신의 이름은? >> ");
+	  System.out.print("당신의 이름은? >> ");
     userName = keyboard.next();
-
-    /*
-    //파일 불러오기
     File file = new File(fileName);
     try{
       Scanner sc = new Scanner(file);
-      int money = sc.nextInt(); //돈
-      int rodLevel = sc.nextInt(); //로드레벨
+	  String buffer = sc.nextLine();
+      money =  Integer.parseInt(buffer); //돈
+	  buffer = sc.nextLine();
+      rodLevel = Integer.parseInt(buffer); //로드레벨
+
       sc.close();
     }//try문 닫는 괄호
     catch(FileNotFoundException e){
       System.out.println("파일을 읽어오는 도중에 오류가 발생했습니다");
-      file.createNewFile();
+      //file.createNewFile();
     }
-
-    User user = new User(name, money, rodLevel);
-
-   	System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .");
-// delay 후 콘솔창 clear
-
-     */
-
     System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .\n\n");
-
-
-
-
 
 //콘솔창 clear
 //타이틀
@@ -68,7 +57,7 @@ class Main {
       menu = keyboard.nextInt();
       // 콘솔창 clear
       switch(menu){
-      case 1: // 낚시하러 수정해야할 것: 초반에 돈이 없어서 프라이스 가격이 안만들어지네요ㅜ
+      case 1:
       //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
         int randomInt = random.nextInt(fishArray.length -1);
         double fishWeight = 10 * random.nextDouble() + 1;
@@ -96,15 +85,9 @@ class Main {
               System.out.println(e);
           }
               System.out.println( "낚시가 끝났습니다!\n" );
-
-
-
-
-
         break;
 
       case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
-
       	Rod rod = new Rod ();
       	rod.messageStore();
       	Scanner key = new Scanner(System.in);
@@ -142,14 +125,6 @@ class Main {
 
   }//main함수 닫는 괄호
 
-  public void fishing(){ //낚시하기
-
-  }//fishing 함수 닫는 괄호
-
-  public void shop(){//상점
-
-  }//shop 함수 닫는 괄호
-
   public static void savefile(User user){//user정보 저장
 	String fileName= "user.txt";
     PrintWriter outputStream= null;
@@ -161,7 +136,7 @@ class Main {
       System.exit(0);
     }
     Scanner keyboard= new Scanner(System.in);
-    outputStream.println("이름 : "+user.getName() +"  돈 : " +user.getMoney() + "  레벨 : "+user.getRodLevel());
+    outputStream.println("이름 : " + user.getName() + "  돈 : " + user.getMoney() + "  레벨 : "+user.getRodLevel());
     outputStream.close();
 
     System.out.println("저장 완료");
