@@ -1,195 +1,59 @@
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.io.File;
+import java.io.*;
 
-class Main {
-  public static void main(String[] args) {
-    String userName;
-    String fileName= "user.txt";
-    Scanner keyboard = new Scanner(System.in);
-    Random random = new Random();
-    int money = 0, rodLevel = 1;
-
-    //물고기 배열
-    String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우", "붕어", "참치", "고등어", "꽁치"};
-    //이야기의 시작
-	  System.out.print("당신의 이름은? >> ");
-    userName = keyboard.next();
-    File file = new File(fileName);
-    try{
-      Scanner sc = new Scanner(file);
-	    String buffer = sc.nextLine();
-      money =  Integer.parseInt(buffer); //돈
-	    buffer = sc.nextLine();
-      rodLevel = Integer.parseInt(buffer); //로드레벨
-      sc.close();
-    }//try문 닫는 괄호
-    catch(FileNotFoundException e){
-      System.out.println("파일을 읽어오는 도중에 오류가 발생했습니다");
-      //file.createNewFile();
+public class Fishing{
+    private int count = 0;
+    private boolean success = true;
+    private int rnd;
+    private String str = "";
+    Timer timer = new Timer();
+    Timer timer2 = new Timer(); //각각의 타이머 필요
+    public Fishing(){
+        count = 0;
+        rnd = (int)(Math.random()*5) +1;
     }
-    System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .\n\n");
-
-//콘솔창 clear
-//타이틀
-    System.out.println("\t낚시왕 " + userName + "!");
-    System.out.println();
-//콘솔창 clear
-
-    User user = new User(userName);
-    boolean gameEND = false;
-    int menu;
-
-//반복문 안에 메뉴 선택 스위치문으로
-    while(!gameEND){
-    	// 메뉴선택
-      System.out.println("\t" + userName + "(돈: " + user.getMoney() + " | 낚싯대 레벨: " + user.getRodLevel() + ")");
-      System.out.println("\t1. 낚시하러 가기");
-      System.out.println("\t2. 상점 가기");
-      System.out.println("\t3. 저장하기");
-      System.out.println("\t4. 종료하기");
-      System.out.print("\t>> ");
-
-      menu = keyboard.nextInt();
-      // 콘솔창 clear
-      switch(menu){
-      case 1:
-      //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
-        int randomInt = random.nextInt(fishArray.length -1);
-        double fishWeight = 10 * random.nextDouble() + 1;
-        int fishPrice = (int)(fishWeight * 10000 * user.getRodLevel());
-        Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
-        Fishing fishing = new Fishing();
-
-        try
-          {
-              if(!fishing.getInput()){//낚시 실패하면
-                  System.out.println("놓친 어종: " + fishArray[randomInt]);
-                  System.out.printf("무게: %.2fkg\n", fishWeight);
-                  System.out.println("가격: " + fishPrice + "원");
-
-              }else{ //낚시 성공시
-                  System.out.println("잡힌 어종: " + fishArray[randomInt]);
-                  System.out.printf("무게: %.2fkg\n", fishWeight);
-                  System.out.println("가격: " + fishPrice + "원");
-                  user.setMoney(fishPrice);
-              }
-
-          }
-              catch(Exception e)
-          {
-              System.out.println(e);
-          }
-              System.out.println( "낚시가 끝났습니다!\n" );
-        break;
-
-      case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
-      	Rod rod = new Rod ();
-      	rod.messageStore();
-      	Scanner key = new Scanner(System.in);
-		int selectRod = key.nextInt();
-        rod.setName(selectRod);
-        rod.setPrice(selectRod);
-      	int currentMoney= user.getMoney() - rod.getPrice();
-        if(currentMoney <0){
-            System.out.println("돈이 부족합니다.");
-        }else{
-            user.setStore(rod.getPrice()); //파라미터로 넣은 값만큼 현재 금액에서 자동적으로 빼줌
-            System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");}
-      	break;
-
-      case 3: //저장하기
-      	savefile(user);
-      	break;
-
-      case 4: //게임종료
-      	System.out.println("게임을 종료합니다");
-      	savefile(user);
-      	keyboard.close();
-      	System.exit(0);
-      	break;
-      }//switch문 닫는 괄호
-      if(user.getMoney() >= 3000000) gameEND = true;
-    }//while문 닫는 괄호
-
-
-    System.out.println("\n\n부족한 학비를 모으기 위해 낚시를 시작한 " + userName + "은 학비를 다 모은 후 학교로 돌아가고. . .\n");
-    System.out.println("그렇게 낚시계의 전설로 남게되었다. . .\n\n\n");
-    System.out.println("\tT  H  E\n");
-    System.out.println("\tE  N  D");
-
-
-  }//main함수 닫는 괄호
-
-  public static void savefile(User user){//user정보 저장
-	String fileName= "user.txt";
-    PrintWriter outputStream= null;
-	try{
-      outputStream= new PrintWriter(fileName);
+    TimerTask task = new TimerTask(){
+		public void run(){
+			if(str.equals("")){ //아무것도 입력안하고 ( == 스트링이 이전과 같을경우) 시간초과일경우
+				System.out.println( "\n시간 초과로 물고기가 도망갔습니다." );
+				System.out.println( "아무키나 입력하여 주세요."); //이것을 하여주지 않으면 55번 라인의 값을 전달하지 않은 이상 넘어가지지 않아서, 유저에서 아무값이 받아서 그걸 처리한다. 핵심 일단, 대기 교수님에게 여줍기
+				success= false; // 시간초과로 인한 실패의 경우를 변수에 저장
+				timer2.cancel();
+				return;
+			}
+		}
+    };
+    TimerTask task2 = new TimerTask(){
+		public void run(){
+			if (count < rnd){
+				System.out.println(".");
+				count++;
+			}else{
+				System.out.print("!");
+			}
+		}
+    };
+    public boolean getInput() throws Exception{
+        timer.schedule(task, 6*1000); //입력을 위한
+        System.out.println( "낚시를 시작하겠습니다!" );
+        System.out.println( "\n '!' 와 동시에 'f' 를 입력하여 주세요!");
+        timer2.schedule(task2, 3000,500); //표시하기 위한
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        str = in.readLine();
+        if(count < rnd){ // timer 클래스가 미리 실행되는 것을 방지하기 위해서 count가 맥스값에 차지 않았을 때, 여전히 타이밍 실패로 만들기 위함
+            success = false;
+        }
+        timer2.cancel();
+        timer.cancel();
+    if(!success){ //시간 초과에 의한 실패 when !success
+        System.out.println( "\n타이밍을 놓쳐서 아쉽습니다, 다음에 다시 시도해주세요.");
+    }else if(!str.equals("f")){ // 아무키나 입력할 경우에도 여기에 포함되지만 위에서 else 구문을 통하여서 걸렀기 때문에 이쪽은 들어가지 않음, 에입력은 하였으나 (==스트링의 변화는 있었으나), 잘못 입력한 경우
+        System.out.println("\n잘못된 문자를 입력하여 낚시에 실패하였습니다.");
+    }else{ //성공
+        System.out.println( "\n낚시에 성공하셨습니다.");
     }
-    catch(FileNotFoundException e){
-      System.out.println("Error opening the file"+ fileName);
-      System.exit(0);
+    return success;
     }
-    Scanner keyboard= new Scanner(System.in);
-    outputStream.println("이름 : " + user.getName() + "  돈 : " + user.getMoney() + "  레벨 : "+user.getRodLevel());
-    outputStream.close();
-
-    System.out.println("저장 완료");
-
-  }//savefile 함수 닫는 괄호
-
-}//class Main 닫는 괄호
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-//<User가 여러명일때>
-
-//Scanner inputStream= null;
-try{
-inputStream= newScanner(newFile(fileName));
 }
-catch(FileNotFoundExceptione){
-System.out.println("Error opening the file "+ fileName);
-System.exit(0);
-}
-while(inputStream.hasNextLine()){
-String line= inputStream.nextLine();
-if(line==userName){
-	System.out.println("이전의 기록된 사용자가 있습니다. 이어서 하시겠습니까?(1.예 2.아니오)");
-	int n=keyboard.nextInt();
-	if(n==1){
-이름 돈 낚싯대 레벨
-}
-}//if
-}//while문
-inputStream.close();
-
-while()
-String name=sc.next();
-if(userName==name)//그대로이어서
-없으면 새로 만들기
-
-< user.txt >
-user
-0
-0
-
-*/
