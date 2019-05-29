@@ -6,9 +6,10 @@ public class User{
 
 	User(String name){
 		this.name = name;
+		rodLevel = 1;
 	}
 	public void setMoney(int money){
-		this.money = money;
+		this.money += money;
 	}
 	public int getMoney(){
 		return money;

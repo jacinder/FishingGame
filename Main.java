@@ -13,7 +13,7 @@ class Main {
     Random random = new Random();
 
     //물고기 배열
-    String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우" };
+    String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우", "붕어", "참치", "고등어", "꽁치"};
     //이야기의 시작
 	System.out.print("당신의 이름은? >> ");
     userName = keyboard.next();
@@ -72,33 +72,34 @@ class Main {
       //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
         int randomInt = random.nextInt(fishArray.length -1);
         double fishWeight = 10 * random.nextDouble() + 1;
-        int fishPrice = (int)(fishWeight * 1000 * user.getRodLevel());
+        int fishPrice = (int)(fishWeight * 10000 * user.getRodLevel());
         Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
         Fishing fishing = new Fishing();
-              
+
         try
           {
               if(!fishing.getInput()){//낚시 실패하면
                   System.out.println("놓친 어종: " + fishArray[randomInt]);
-                  System.out.println("무게: " +fishWeight);
-                  System.out.println("가격: " +fishPrice);
-                  
+                  System.out.printf("무게: %.2fkg\n", fishWeight);
+                  System.out.println("가격: " + fishPrice + "원");
+
               }else{ //낚시 성공시
                   System.out.println("잡힌 어종: " + fishArray[randomInt]);
-                  System.out.println("무게: " +fishWeight + "g");
-                  System.out.println("가격: " +fishPrice+ "원");
+                  System.out.printf("무게: %.2fkg\n", fishWeight);
+                  System.out.println("가격: " + fishPrice + "원");
+                  user.setMoney(fishPrice);
               }
-              
+
           }
               catch(Exception e)
           {
               System.out.println(e);
           }
-              System.out.println( "낚시가 끝났습니다!" );
-              
-              
+              System.out.println( "낚시가 끝났습니다!\n" );
 
-       
+
+
+
 
         break;
 
@@ -129,7 +130,7 @@ class Main {
       	System.exit(0);
       	break;
       }//switch문 닫는 괄호
-      if(user.getMoney() >= 30000) gameEND = true;
+      if(user.getMoney() >= 3000000) gameEND = true;
     }//while문 닫는 괄호
 
 
