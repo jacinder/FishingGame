@@ -161,7 +161,7 @@ class Main {
       System.exit(0);
     }
     Scanner keyboard= new Scanner(System.in);
-    outputStream.println(user.getName() + user.getMoney() + user.getRodLevel());
+    outputStream.println("이름 : "user.getName() +"  돈 : " +user.getMoney() + "  레벨 : "+user.getRodLevel());
     outputStream.close();
 
     System.out.println("저장 완료");
