@@ -115,7 +115,7 @@ class Main {
         if(currentMoney <0){
             System.out.println("돈이 부족합니다.");
         }else{
-            user.setMoney(currentMoney);
+            user.setStore(rod.getPrice()); //파라미터로 넣은 값만큼 현재 금액에서 자동적으로 빼줌
             System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");}
       	break;
 

@@ -11,6 +11,9 @@ public class User{
 	public void setMoney(int money){
 		this.money += money;
 	}
+	public void setStore(int money) {
+		this.money -= money;
+	}
 	public int getMoney(){
 		return money;
 	}
@@ -19,9 +22,6 @@ public class User{
 	}
 	public int getRodLevel(){
 		return rodLevel;
-	}
-	public void sell(Fish fish){
-		 money += fish.getfishPrice();
 	}
     public String getName(){
         return name;
