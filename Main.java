@@ -4,6 +4,7 @@ import java.util.TimerTask;
 import java.io.*;
 
 public class Fishing{
+    
     private int count = 0;
     private boolean success = true;
     private int rnd;
