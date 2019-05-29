@@ -68,7 +68,7 @@ class Main {
       menu = keyboard.nextInt();
       // 콘솔창 clear
       switch(menu){
-      case 1: // 낚시하러 수정해야할 것: 초반에 돈이 없어서 프라이스 가격이 안만들어지네요ㅜ
+      case 1:
       //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
         int randomInt = random.nextInt(fishArray.length -1);
         double fishWeight = 10 * random.nextDouble() + 1;
@@ -96,15 +96,9 @@ class Main {
               System.out.println(e);
           }
               System.out.println( "낚시가 끝났습니다!\n" );
-
-
-
-
-
         break;
 
       case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
-
       	Rod rod = new Rod ();
       	rod.messageStore();
       	Scanner key = new Scanner(System.in);
@@ -142,14 +136,6 @@ class Main {
 
   }//main함수 닫는 괄호
 
-  public void fishing(){ //낚시하기
-
-  }//fishing 함수 닫는 괄호
-
-  public void shop(){//상점
-
-  }//shop 함수 닫는 괄호
-
   public static void savefile(User user){//user정보 저장
 	String fileName= "user.txt";
     PrintWriter outputStream= null;
@@ -161,7 +147,7 @@ class Main {
       System.exit(0);
     }
     Scanner keyboard= new Scanner(System.in);
-    outputStream.println("이름 : "+user.getName() +"  돈 : " +user.getMoney() + "  레벨 : "+user.getRodLevel());
+    outputStream.println("이름 : " + user.getName() + "  돈 : " + user.getMoney() + "  레벨 : "+user.getRodLevel());
     outputStream.close();
 
     System.out.println("저장 완료");
