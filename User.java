@@ -8,11 +8,12 @@ public class User{
 		this.name = name;
 		rodLevel = 1;
 	}
-	public void setMoney(int money){
-		this.money += money;
-	}
 	public void setStore(int money) {
 		this.money -= money;
+	}
+
+	public void setMoney(int money){
+		this.money += money;
 	}
 	public int getMoney(){
 		return money;
