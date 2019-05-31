@@ -15,36 +15,27 @@ class Main {
     //물고기 배열
     String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우", "붕어", "참치", "고등어", "꽁치"};
     //이야기의 시작
-	System.out.print("당신의 이름은? >> ");
+	  System.out.print("당신의 이름은? >> ");
     userName = keyboard.next();
-
-    /*
     //파일 불러오기
     File file = new File(fileName);
+    String buffer;
+    int money=0;
+    int rodLevel=1;
     try{
       Scanner sc = new Scanner(file);
-      int money = sc.nextInt(); //돈
-      int rodLevel = sc.nextInt(); //로드레벨
+      buffer = sc.nextLine(); //돈
+      money = Integer.parseInt(buffer);
+      buffer = sc.nextLine(); //로드레벨
+      rodLevel = Integer.parseInt(buffer);
       sc.close();
     }//try문 닫는 괄호
     catch(FileNotFoundException e){
       System.out.println("파일을 읽어오는 도중에 오류가 발생했습니다");
       file.createNewFile();
     }
-
     User user = new User(name, money, rodLevel);
-
    	System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .");
-// delay 후 콘솔창 clear
-
-     */
-
-    System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .\n\n");
-
-
-
-
-
 //콘솔창 clear
 //타이틀
     System.out.println("\t낚시왕 " + userName + "!");
