@@ -4,9 +4,10 @@ public class User{
 	private int money;
 	private int rodLevel;
 
-	User(String name){
+	User(String name,int money, int rodLevel){
 		this.name = name;
-		rodLevel = 1;
+		this.money = money;
+		this.rodLevel = rodLevel;
 	}
 	public void setStore(int money) {
 		this.money -= money;

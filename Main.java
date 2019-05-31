@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.File;
+
 
 class Main {
   public static void main(String[] args) {
@@ -32,17 +34,15 @@ class Main {
     }//try문 닫는 괄호
     catch(FileNotFoundException e){
       System.out.println("파일을 읽어오는 도중에 오류가 발생했습니다");
-      file.createNewFile();
+      //file.createNewFile();
     }
-    User user = new User(name, money, rodLevel);
+    User user = new User(userName, money, rodLevel);
    	System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .");
 //콘솔창 clear
 //타이틀
     System.out.println("\t낚시왕 " + userName + "!");
     System.out.println();
 //콘솔창 clear
-
-    User user = new User(userName);
     boolean gameEND = false;
     int menu;
 
