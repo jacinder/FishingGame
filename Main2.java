@@ -45,7 +45,7 @@ class Main2{
 		}
 		User user = new User(userName, money, rodLevel);
 		System.out.println("In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-		new ButtonThree(user);
+		new ButtonThree(user,fishArray);
 	}
 }
 class ButtonThree{
@@ -55,7 +55,7 @@ class ButtonThree{
 	JButton b4 = new JButton("HELP");
 	JButton b5 = new JButton("EXIT");
     
-    public ButtonThree(User user)
+    public ButtonThree(User user, String[] fishArray)
 	{
 		JFrame menu = new JFrame("Fishing game"); //제목 설정		
 		menu.setLayout(new GridLayout(5,1)); //레이아웃 설정
@@ -101,7 +101,7 @@ class ButtonThree{
 		});//b3 ActionListener
 		b4.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Help();
+				new Ask();
 			}
 		});//b4 ActionListener
 		b5.addActionListener(new ActionListener(){
@@ -126,55 +126,63 @@ class Example{
     }//Example()
 }//Example
 class Help{
-	public Help(){
+	public Help(String selected){
 		Dimension dim = new Dimension(600,200);
 		JLabel label = new JLabel();
 		JFrame frame = new JFrame("fishing game");
-		JTextField text = new JTextField("Enter a menu");
+		JButton button = new JButton("confirm");
 		frame.setLocation(300,400);
 		frame.setPreferredSize(dim);
-		//메뉴 출력
+		
+		int selectHelp = Integer.parseInt(selected);
+		if(selectHelp == 1){
+            label.setText("<html>Salmon<br/>Flatfish<br/>Squid<br/>Octopus<br/>Minnow<br/>Shrimp<br/>Carp<br/>Tuna<br/>Mackerel<br/>Saury</html>");
+		}else if (selectHelp == 2){
+			label.setText("<html>Fishing nod lists:<br/>초급<br/>중급<br/>고급<br/></html>");
+        }else if (selectHelp == 3){
+			label.setText("<html>This program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester<br/>This game is also supported by Prof. Ahn in Handong Global University<br/>Any inquries, just Contact us: Handong@hanodong.edu</html>");
+        }else{
+            System.out.println("\nYou entered wrong option");
+		}
+		frame.setLayout(new GridLayout(2,1));
+		frame.add(label);
+		frame.add(button);
+		frame.pack();
+		frame.setVisible(true);
+		button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				frame.dispose();
+			}
+		});
+		
+	}
+}
+class Ask{
+	Ask(){
+		Dimension dim = new Dimension(600,200);
+		JFrame frame = new JFrame("askmenu");
+		JButton button = new JButton("ENTER");
+		JLabel label = new JLabel();
+		JTextField text = new JTextField();
+
 		label.setText("<html>Creator: How can I help you?<br/>1: Show me the fish list<br/>2: Show me the fishing nod list<br/>3: Show me the creators who made this prgoram<br/></html>");
 		
+		frame.setLocation(300,400);
+		frame.setPreferredSize(dim);
+
+		frame.setLayout(new GridLayout(3,1));
 		frame.add(label);
 		frame.add(text);
+		frame.add(button);
 
-        frame.pack();
+		frame.pack();
 		frame.setVisible(true);
+
+		button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				new Help(text.getText());
+				frame.dispose();
+			}
+		});//button ActionListener
 	}
-              
-        // if(selectHelp == 1){
-        
-        //     int length = fishArray.length;
-        //     count = 0;
-            
-        //     System.out.println("\nFish list: ");
-            
-        //     while(count != length){
-        //         System.out.println(count+1 + ":" + fishArray[count]);
-        //         count++;
-        //     }
-        // }else if (selectHelp == 2){ //nod 를 array 만들어 놓지 않는 한 이렇게,,
-        //       String name = null;
-        //       Rod rod2 = new Rod();
-            
-        //       System.out.println("\nFishing nod list: ");
-            
-        //       while(count < 3){
-        //           rod2.setName(count+1);
-        //           name = rod2.getName();
-        //           System.out.println(name);
-        //           count ++;
-        //       }
-            
-        // }else if (selectHelp == 3){
-        //     System.out.println("\nThis program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester\n");
-        //     System.out.println("This game is also supported by Prof. Ahn in Handong Global University\n");
-        //     System.out.println("Any inquries, just Contact us: Handong@hanodong.edu\n");
-            
-        // }else{
-        //     System.out.println("\nYou entered wrong option");
-        // }
-              
-		// break;
 }
