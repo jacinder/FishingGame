@@ -18,13 +18,13 @@ public class Fishing{
         public void run(){ // TimerTask 클래스 내에있는 run 메소드를 overriding 해준다.
             if(str.equals("")){ //이번과 스트링이 같다, 즉 아무것도 입력이 되지 않은 경우(못잡은 경우) 는 크게 두 가지 경우입니다 1)입질이 안 와서 입력을 못한경우 2)시간초과로인하여서 입력을 못한 경우이다.
                 if(bite){ // 입질이 왔으나 시간초과로 못잡은경우
-                    System.out.println( "\n[실패] 시간 초과로 물고기가 도망갔습니다." ); // 실패한 내용 출력
-                    System.out.println( "아무키나 입력하여 주세요."); //이것을 입력하여 준 것은, 62번재줄에 입력해야할 값을 하나도 입력하지 않았기 때문입니다.
+                    System.out.println( "\n[Fail] The fish has gone over time. " ); // 실패한 내용 출력
+                    System.out.println( "Input any key for next step"); //이것을 입력하여 준 것은, 62번재줄에 입력해야할 값을 하나도 입력하지 않았기 때문입니다.
                     success= false; // 물고기 못잡았기때문에 false로 저장했습니다.
                     timer2.cancel(); // 낚시가 끝났으니, timer2.cancel 메소드를 통해서 . 과 ! 의 출력을 멈춥니다.
                 }else{ // 첫번째 경우를 제외하면, 아무것도 입력이 되지 않았지만, 못잡은 경우는 낚시대에 입질이 오지 않은 경우 즉, 주어진 시간안에 . . . 만 출력이 된 경우르 를 뜻합니다.
-                    System.out.println( "[실패] 낚시대에 입질이 오지 않았습니다" ); // 실패한 내용 출력
-                    System.out.println( "아무키나 입력하여 주세요."); //마찬가지로,62번재줄에 입력해야할 값을 하나도 입력하지 않았기 때문입니다.
+                    System.out.println( "[Fail] Any fish doesn't take the bite" ); // 실패한 내용 출력
+                    System.out.println( "Input any key for next step"); //마찬가지로,62번재줄에 입력해야할 값을 하나도 입력하지 않았기 때문입니다.
                     success= false; // 마찬가지로, 실패의 경우를 변수에 저장
                     timer2.cancel(); // 마찬가지로, 못잡았기 때문에 false를 저장했습니다.
                     }
@@ -56,8 +56,8 @@ public class Fishing{
 
         timer.schedule(task, 5*1000); // timer.schedule의 메소드를 이용하여 task를 5초뒤에 실행한다! 그리고 바로 아래 실행
 
-        System.out.println( "낚시를 시작하겠습니다!" ); // 낚시시작을 알리는 내용 출력
-        System.out.println( "\n '!' 가 뜨면, 'f' 를 입력하여 주세요!"); // 낚시 방법을 알려줌
+        System.out.println( "Fishing begins.." ); // 낚시시작을 알리는 내용 출력
+        System.out.println( "\n Input f with Enter key as soon as you see this letter '!' "); // 낚시 방법을 알려줌
 
         timer2.schedule(task2, 2000,800); // timer2.schedule의 메소드를 이용하여 task를 2초뒤에 실행한다 0.8초간격으로 실행! 그리고 바로 아래 실행
 
@@ -76,17 +76,19 @@ public class Fishing{
         timer.cancel(); // timer.cancel() 메소드를 통해서 task 가 계속 출력되는 것을 방지하게 됨!
 
     if(!success && count < rnd && bite){ //실패이면서, count <rnd 일때면서, 입질이 안온경우
-        System.out.println( "\n[실패] 너무 일찍 입력하셨습니다, 조금만 천천히 눌러주세요..\n");
+        System.out.println( "\n[Fail] You entered too early, please press the key slowly.\n");
     }else if(!success && !bite){ // 실패이면서, 입질이 없었을때 나오는 메시지
-        System.out.println("[실패] 아쉽습니다, 다음에 다시시도해주세요.\n");
+        System.out.println("[Fail] that was so close, try again next\n");
     }else if(!str.equals("f")){ // f 가 아닌 문자를 입력하였을 경우
-        System.out.println("\n[실패] 잘못된 문자를 입력하여 낚시에 실패하였습니다. 'f' 키를 입력해주세요.\n");
+        System.out.println("\n[Fail] You entered with wrong key. please try to enter with key 'f' \n");
     }else{ //성공했을 경우
-        System.out.println( "\n[성공] 축하합니다! 낚시에 성공하셨습니다.\n");
+        System.out.println( "\n[Success] Congratuation! You caught the fish!\n");
     }
     return success; //그 성공여부를 return 하여준다.
 
     }
 }
+
+
 
 

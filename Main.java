@@ -15,9 +15,10 @@ class Main {
     Random random = new Random();
 
     //물고기 배열
-    String[] fishArray = {"연어", "광어", "오징어", "문어", "피라미", "새우", "붕어", "참치", "고등어", "꽁치"};
+      String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
+      //이야기의 시작
     //이야기의 시작
-	  System.out.print("당신의 이름은? >> ");
+	  System.out.print("What is your name? >> ");
     userName = keyboard.next();
     //파일 불러오기
     File file = new File(fileName);
@@ -33,14 +34,14 @@ class Main {
       sc.close();
     }//try문 닫는 괄호
     catch(FileNotFoundException e){
-      System.out.println("파일을 읽어오는 도중에 오류가 발생했습니다");
+      System.out.println("Error occurred while trying to read the file");
       //file.createNewFile();
     }
     User user = new User(userName, money, rodLevel);
-   	System.out.println("한동대학교 전산전자공학부 " + userName + "은 부족한 학비를 모으기 위해 낚시를 시작하게 되는데 . . .");
+   	System.out.println("In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
 //콘솔창 clear
 //타이틀
-    System.out.println("\t낚시왕 " + userName + "!");
+    System.out.println("\t The king of Fisherman " + userName + "!");
     System.out.println();
 //콘솔창 clear
     boolean gameEND = false;
@@ -49,12 +50,12 @@ class Main {
 //반복문 안에 메뉴 선택 스위치문으로
     while(!gameEND){
     	// 메뉴선택
-      System.out.println("\t" + userName + "(돈: " + user.getMoney() + " | 낚싯대 레벨: " + user.getRodLevel() + ")");
-      System.out.println("\t1. 낚시하러 가기");
-      System.out.println("\t2. 상점 가기");
-      System.out.println("\t3. 저장하기");
-      System.out.println("\t4. 종료하기");
-      System.out.print("\t>> ");
+        System.out.println("\t" + userName + "(Current Money: " + user.getMoney() + " | Rod Level: " + user.getRodLevel() + ")");
+        System.out.println("\t1. Go Fishing");
+        System.out.println("\t2. Go Store");
+        System.out.println("\t3. Save");
+        System.out.println("\t4. Exit");
+        System.out.print("\t>> ");
 
       menu = keyboard.nextInt();
       // 콘솔창 clear
@@ -70,14 +71,14 @@ class Main {
         try
           {
               if(!fishing.getInput()){//낚시 실패하면
-                  System.out.println("놓친 어종: " + fishArray[randomInt]);
-                  System.out.printf("무게: %.2fkg\n", fishWeight);
-                  System.out.println("가격: " + fishPrice + "원");
+                  System.out.println("The fish you just missed: " + fishArray[randomInt]);
+                  System.out.printf("Weight: %.2fkg\n", fishWeight);
+                  System.out.println("Price: " + fishPrice + " Won");
 
               }else{ //낚시 성공시
-                  System.out.println("잡힌 어종: " + fishArray[randomInt]);
-                  System.out.printf("무게: %.2fkg\n", fishWeight);
-                  System.out.println("가격: " + fishPrice + "원");
+                  System.out.println("The fish you just caught: " + fishArray[randomInt]);
+                  System.out.printf("Wegiht: %.2fkg\n", fishWeight);
+                  System.out.println("Price: " + fishPrice + " Won");
                   user.setMoney(fishPrice);
               }
 
@@ -86,7 +87,7 @@ class Main {
           {
               System.out.println(e);
           }
-              System.out.println( "낚시가 끝났습니다!\n" );
+              System.out.println( "The fishing is over!\n" );
 
 
 
@@ -104,10 +105,10 @@ class Main {
         rod.setPrice(selectRod);
       	int currentMoney= user.getMoney() - rod.getPrice();
         if(currentMoney <0){
-            System.out.println("돈이 부족합니다.");
+            System.out.println("The money you have isn't enough");
         }else{
             user.setStore(rod.getPrice()); //파라미터로 넣은 값만큼 현재 금액에서 자동적으로 빼줌
-            System.out.println(rod.getName() + " 낚시대를 구매하셨습니다");}
+            System.out.println(rod.getName() + " You got new fishing rod!");}
       	break;
 
       case 3: //저장하기
@@ -115,7 +116,7 @@ class Main {
       	break;
 
       case 4: //게임종료
-      	System.out.println("게임을 종료합니다");
+      	System.out.println("Game End");
       	savefile(user);
       	keyboard.close();
       	System.exit(0);
@@ -125,8 +126,8 @@ class Main {
     }//while문 닫는 괄호
 
 
-    System.out.println("\n\n부족한 학비를 모으기 위해 낚시를 시작한 " + userName + "은 학비를 다 모은 후 학교로 돌아가고. . .\n");
-    System.out.println("그렇게 낚시계의 전설로 남게되었다. . .\n\n\n");
+    System.out.println("\n\n The legend of Fishermen " + userName + "fianlly come back to School\n");
+    System.out.println("And his story has been told for a long time \n\n\n");
     System.out.println("\tT  H  E\n");
     System.out.println("\tE  N  D");
 
@@ -152,10 +153,10 @@ class Main {
       System.exit(0);
     }
     Scanner keyboard= new Scanner(System.in);
-    outputStream.println("이름 : "+user.getName() +"  돈 : " +user.getMoney() + "  레벨 : "+user.getRodLevel());
+    outputStream.println("Name : "+user.getName() +"  Current Money : " +user.getMoney() + "  Level : "+user.getRodLevel());
     outputStream.close();
 
-    System.out.println("저장 완료");
+    System.out.println("File's saved");
 
   }//savefile 함수 닫는 괄호
 
