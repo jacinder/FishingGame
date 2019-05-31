@@ -54,7 +54,8 @@ class Main {
         System.out.println("\t1. Go Fishing");
         System.out.println("\t2. Go Store");
         System.out.println("\t3. Save");
-        System.out.println("\t4. Exit");
+        System.out.println("\t4. Help");
+        System.out.println("\t5. Exit");
         System.out.print("\t>> ");
 
       menu = keyboard.nextInt();
@@ -115,7 +116,52 @@ class Main {
       	savefile(user);
       	break;
 
-      case 4: //게임종료
+      case 4: //물고기 리스트, 낚시대 리스트 등
+        int selectHelp;
+        int count = 0;
+        System.out.println("Creator: How can I help you?\n");
+        System.out.println("1: Show me the fish list");
+        System.out.println("2: Show me the fishing nod list");
+        System.out.println("3: Show me the creators who made this prgoram");
+        selectHelp = keyboard.nextInt();
+              
+        if(selectHelp == 1){
+        
+            int length = fishArray.length;
+            count = 0;
+            
+            System.out.println("\nFish list: ");
+            
+            while(count != length){
+                System.out.println(count+1 + ":" + fishArray[count]);
+                count++;
+            }
+        }else if (selectHelp == 2){ //nod 를 array 만들어 놓지 않는 한 이렇게,,
+              String name = null;
+              Rod rod2 = new Rod();
+            
+              System.out.println("\nFishing nod list: ");
+            
+              while(count < 3){
+                  rod2.setName(count+1);
+                  name = rod2.getName();
+                  System.out.println(name);
+                  count ++;
+              }
+            
+        }else if (selectHelp == 3){
+            System.out.println("\nThis program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester\n");
+            System.out.println("This game is also supported by Prof. Ahn in Handong Global University\n");
+            System.out.println("Any inquries, just Contact us: Handong@hanodong.edu\n");
+            
+        }else{
+            System.out.println("\nYou entered wrong option");
+        }
+              
+        break;
+              
+
+      case 5: //게임종료
       	System.out.println("Game End");
       	savefile(user);
       	keyboard.close();
