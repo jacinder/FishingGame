@@ -9,6 +9,7 @@ import java.awt.*;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,6 @@ class Main2{
 		String fileName= "user.txt";
 		Scanner keyboard = new Scanner(System.in);
 		Random random = new Random();
-
 		//물고기 배열
 		String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
       	//이야기의 시작
@@ -45,17 +45,17 @@ class Main2{
 		}
 		User user = new User(userName, money, rodLevel);
 		System.out.println("In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-		new ButtonThree(user,fishArray);
+		new ButtonMenu(user,fishArray);
 	}
 }
-class ButtonThree{
+class ButtonMenu{
     JButton b1 = new JButton("FISHING");
     JButton b2 = new JButton("SHOP");
 	JButton b3 = new JButton("SAVE");
 	JButton b4 = new JButton("HELP");
 	JButton b5 = new JButton("EXIT");
     
-    public ButtonThree(User user, String[] fishArray)
+    public ButtonMenu(User user, String[] fishArray)
 	{
 		JFrame menu = new JFrame("Fishing game"); //제목 설정		
 		menu.setLayout(new GridLayout(5,1)); //레이아웃 설정
@@ -70,33 +70,17 @@ class ButtonThree{
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //X버튼 눌렀을 때 닫히도록 설정
 		b1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Example("                 Fishing!!");
+				//new Print("                 Fishing!!");
 			}
 		});//b1 ActionListener
 		b2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Example("                shop");
-				user.setMoney(20000);
+				new Shopping(user);
 			}
 		});//b2 ActionListener
 		b3.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Example("              Saved:)");
-				String fileName= "user.txt";
-				PrintWriter outputStream= null;
-				try{
-				outputStream= new PrintWriter(fileName);
-				}
-				catch(FileNotFoundException f){
-				System.out.println("Error opening the file"+ fileName);
-				System.exit(0);
-				}
-				Scanner keyboard= new Scanner(System.in);
-				outputStream.println(user.getMoney());
-				outputStream.println(user.getRodLevel());
-				outputStream.close();
-
-				System.out.println("File's saved");
+				new SaveFile(user);
 			}
 		});//b3 ActionListener
 		b4.addActionListener(new ActionListener(){
@@ -110,11 +94,85 @@ class ButtonThree{
 			}
 		});//b5 ActionListener
 	}//ButtonThree()
-}//ButtonThree
-class Example{
-    public Example(String message){
+}//ButtonMenu
+class Shopping{
+	JButton beginner = new JButton("beginner");
+	JLabel beginnerPrice = new JLabel("100000");
+	JButton intermediate = new JButton("intermediate");
+	JLabel intermediatePrice = new JLabel("500000");
+	JButton advanced = new JButton("advanced");
+	JLabel advancedPrice = new JLabel("1000000");
+	public Shopping(User user){
+		JFrame shop = new JFrame("SHOP");
+		shop.setLayout(new GridLayout(1,3));
+
+		JPanel panel1 = new JPanel();
+		panel1.setLayout(new GridLayout(2,1));
+		panel1.add(beginner);
+		panel1.add(beginnerPrice);
+		JPanel panel2 = new JPanel();
+		panel2.setLayout(new GridLayout(2,1));
+		panel2.add(intermediate);
+		panel2.add(intermediatePrice);
+		JPanel panel3 = new JPanel();
+		panel3.setLayout(new GridLayout(2,1));
+		panel3.add(advanced);
+		panel3.add(advancedPrice);
+
+		shop.add(panel1);
+		shop.add(panel2);
+		shop.add(panel3);
+
+		beginner.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(user.getBalance()>100000)
+					user.setBalance(-100000);
+				else
+					new Print("Shopping","Not enough balane!");
+			}
+		});
+		intermediate.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(user.getBalance()>500000)
+					user.setBalance(-500000);
+				else
+					new Print("Shopping","Not enough balane!");
+			}
+		});
+		advanced.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				if(user.getBalance()>1000000)
+					user.setBalance(-1000000);
+				else
+					new Print("Shopping","Not enough balane!");
+			}
+		});
+	}
+}
+class SaveFile{
+	public SaveFile(User user){
+		new Print("saveFile","              Saved:)");
+		String fileName= "user.txt";
+		PrintWriter outputStream= null;
+		try{
+		outputStream= new PrintWriter(fileName);
+		}
+		catch(FileNotFoundException f){
+		System.out.println("Error opening the file"+ fileName);
+		System.exit(0);
+		}
+		Scanner keyboard= new Scanner(System.in);
+		outputStream.println(user.getMoney());
+		outputStream.println(user.getRodLevel());
+		outputStream.close();
+
+		System.out.println("File's saved");
+	}
+}//SaveFile
+class Print{
+    public Print(String frameName, String message){
         Dimension dim = new Dimension(300,100);
-        JFrame frame = new JFrame("fishing game");
+        JFrame frame = new JFrame(frameName);
         frame.setLocation(300,400);
         frame.setPreferredSize(dim);
 
@@ -123,8 +181,8 @@ class Example{
         frame.add(label);
         frame.pack();
         frame.setVisible(true);
-    }//Example()
-}//Example
+	}//Print()
+}//Print
 class Help{
 	public Help(String selected){
 		Dimension dim = new Dimension(600,200);
@@ -144,9 +202,9 @@ class Help{
         }else{
             System.out.println("\nYou entered wrong option");
 		}
-		frame.setLayout(new GridLayout(2,1));
-		frame.add(label);
-		frame.add(button);
+		frame.setLayout(new BorderLayout());
+		frame.add(label,BorderLayout.CENTER);
+		frame.add(button,BorderLayout.SOUTH);
 		frame.pack();
 		frame.setVisible(true);
 		button.addActionListener(new ActionListener(){
@@ -170,10 +228,13 @@ class Ask{
 		frame.setLocation(300,400);
 		frame.setPreferredSize(dim);
 
-		frame.setLayout(new GridLayout(3,1));
-		frame.add(label);
-		frame.add(text);
-		frame.add(button);
+		frame.setLayout(new BorderLayout());
+		//label.setBounds(300, 500, 300, 300);
+		frame.add(label,BorderLayout.CENTER);
+		//text.setBounds(300,200,100,100);
+		frame.add(text,BorderLayout.SOUTH);
+		//button.setBounds(300,100,100,100);
+		frame.add(button,BorderLayout.EAST);
 
 		frame.pack();
 		frame.setVisible(true);
