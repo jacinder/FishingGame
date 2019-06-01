@@ -1,6 +1,5 @@
 public class User{
 	private String name;
-	private int level;
 	private int money;
 	private int rodLevel;
 
