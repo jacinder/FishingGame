@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 class Main2{
     public static void main(String[] args){
 		String userName;
@@ -45,7 +46,8 @@ class Main2{
 		}
 		User user = new User(userName, money, rodLevel);
 		System.out.println("In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-		new ButtonMenu(user,fishArray);
+		new Intro(user,fishArray);
+		
 	}
 }
 class ButtonMenu{
@@ -173,8 +175,6 @@ class SaveFile{
 		outputStream.println(user.getMoney());
 		outputStream.println(user.getRodLevel());
 		outputStream.close();
-
-		System.out.println("File's saved");
 	}
 }//SaveFile
 class Print{
@@ -256,3 +256,41 @@ class Ask{
 		});//button ActionListener
 	}
 }
+class Intro{
+    public Intro(User user, String[] fishArray){
+		JFrame frame = new JFrame("Move Label");
+		JTextField name = new JTextField();
+		JButton enter = new JButton();
+        frame.setTitle("Enter your name");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		MyPanel panel=new MyPanel();
+		frame.add(panel, BorderLayout.CENTER);
+		frame.add(name,BorderLayout.SOUTH);
+		frame.add(enter,BorderLayout.EAST);
+        frame.setLocationRelativeTo(null);
+        frame.setSize(500,500);
+		frame.setVisible(true);
+		frame.setVisible(true);
+
+		enter.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				new ButtonMenu(user,fishArray);
+			}
+		});
+    }
+    class MyPanel extends JPanel{
+      ImageIcon icon=new ImageIcon("and.png");
+      Image img=icon.getImage();
+      public void paintComponent(Graphics g){
+              super.paintComponent(g);
+              g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+              g.setFont(new Font("myFont",Font.BOLD ,30));
+              g.setColor(Color.red);
+              g.drawString("Fishing Game <><", 120, 100);
+              g.setFont(new Font("secondFont",Font.ITALIC,20));
+              g.setColor(Color.black);
+              g.drawString("GameStart",130,250);
+              g.drawString("Quit",130,300);
+           }
+    }
+  }
