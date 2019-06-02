@@ -37,9 +37,9 @@ public class Fishing{
                 System.out.println("here");
                 timer2.cancel();
 
-            }
-        }
-    };
+            } //if
+        }// void run
+    }; //TimerTask
 
     TimerTask task2 = new TimerTask(){ // TimerTask 클래스 task2로서 객체를 선언하여주고,
 
@@ -54,8 +54,8 @@ public class Fishing{
                 bite = true; //입질옴
             }
 
-        }
-    };
+        } //void run
+    }; //TimerTask
 
     public boolean getInput() throws Exception{ // 에러체크와 동시에 boolean getInput() 메소드 선언
 
@@ -69,31 +69,37 @@ public class Fishing{
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         str = kb.next().charAt(0); // 한줄 입력받을 것을 대기한다.
 
-        if(count <= rnd2){ // timer 클래스가 미리 실행되는 것을 방지하기 위해서 count가 맥스값에 차지 않았을 때, 여전히 타이밍 실패로 만들기 위함 이걸 하지 않으면, 언제 입력하든 항상 성공을 표시 됨
+        if(count < rnd2){ // timer 클래스가 미리 실행되는 것을 방지하기 위해서 count가 맥스값에 차지 않았을 때, 여전히 타이밍 실패로 만들기 위함 이걸 하지 않으면, 언제 입력하든 항상 성공을 표시 됨
             // 궁금할 경우 이 라인을 제거하고, . . . 구간에 f를 입력해보면 됨
+
             success = false; // 실패임을 알려줌
 
+        }else if (count == rnd2 && !bite){
+            success = false;
         }
-
         //(timer 클래스의 핵심) task 를 5초뒤에 처리한다고 하더라도, 5초 안에 cancel()메소드 라인에 도달하게 되면 task는 실행하지 않는다.
         // 같은말로서, 위에서 입력 스트림을 통해서 입력을 받았을 경우에 바로 아래로 내려와서 밑에 메소드를 실행하게 된다, 그렇다면 5초 뒤에 실행된다 하더라도 53번 줄에 들어가서 처리할 task는 실행되지 않고 멈춘다.
         timer2.cancel(); // 시간안에 이게 실행되면, task 업무는 처리 안함 timer2.cancel() 가 멈춤!
         timer.cancel(); // timer.cancel() 메소드를 통해서 task 가 계속 출력되는 것을 방지하게 됨!
+    
 
 
     if(!success && count <= rnd2 && !bite){ //실패이면서, count <rnd2 일때면서, 입질이 안온경우
         System.out.println( "\n[Fail] You entered too early, please press the key slowly.\n");
     }else if(!success && !bite){ // 실패이면서, 입질이 없었을때 나오는 메시지
         System.out.println("[Fail] that was so close, try again next\n");
+    }else if (!success && str == rnd){
+         System.out.println( "\n[Fail] You entered too late, please press the key fast.\n");
     }else if(str != rnd){ // f 가 아닌 문자를 입력하였을 경우
         System.out.println("\n[Fail] You entered with wrong key. please try to enter with key 'f' \n");
     }else{ //성공했을 경우
         System.out.println( "\n[Success] Congratuation! You caught the fish!\n");
+        success = true;
     }
     return success; //그 성공여부를 return 하여준다.
 
-    }
-}
+    } // getInput()
+} //Fishing
 
 
 
