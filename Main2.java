@@ -12,6 +12,10 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
 class Main2{
 	public static int money;
 	public static int rodLevel;
@@ -70,7 +74,10 @@ class ButtonMenu{
 		menu.setVisible(true); 
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
 		b1.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){;
+			public void actionPerformed(ActionEvent e){
+				MyLabel bar = new MyLabel(20);
+				TabAndThreadEx frame = new TabAndThreadEx(bar);
+				bar.setFrame(frame);
 			}
 		});//b1 ActionListener
 		b2.addActionListener(new ActionListener(){
@@ -303,5 +310,122 @@ class Intro{
 			g.drawString("Enter your name to start the game",10,430);
            }
 	}
-	
+}
+class MyLabel extends JLabel{
+    int barSize=0;//바의 크기
+    int maxBarSize; //바의 맥스 사이즈
+    JFrame frame;
+    MyLabel(int maxBarSize){
+        this.maxBarSize=maxBarSize;
+    }
+    public void setFrame(JFrame frame){
+        this.frame = frame;
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.setColor(Color.darkGray);
+        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
+        if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
+        g.fillRect(0,0,width,this.getHeight());
+    }
+    synchronized void fill(){
+        if(barSize==maxBarSize){
+            try{
+                frame.dispose();
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+        barSize++;
+        this.repaint();//바 다시그리기
+        this.notify();//기다리는 ConsumerThread 스레드 깨우기
+    }
+    synchronized void consume(){
+        if(barSize==0){
+            try{
+                this.wait();//바의 크기가 0이면 바의 크기가 0보다 커질때까지 대기
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+        barSize--;
+        this.repaint();//바 다시 그리기
+        this.notify();//기다리는 이벤트 스레드 깨우기
+    }
+}
+
+class ConsumerThread extends Thread{
+    MyLabel con;
+    ConsumerThread(MyLabel con){
+        this.con=con;
+    }
+    public void run(){
+        while(true){
+            try{
+                sleep(500);
+                con.consume();//0.2초마다 바를 1씩 줄인다.
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+    }
+}
+class TabAndThreadEx extends JFrame{
+    MyLabel bar;//바의 최대 크기를 100으로 지정
+    JLabel letter = new JLabel("        click");
+    
+    TabAndThreadEx(MyLabel bar){
+        this.bar = bar;
+        this.setTitle("아무키나 빨리 눌러 바 채우기");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(2,1));
+        
+        JLabel text = new JLabel("아무거나");
+        this.add(text);
+        
+        bar.setBackground(Color.ORANGE);
+        bar.setOpaque(true);
+        bar.setLocation(20, 50);
+        bar.setSize(300,20);
+        this.add(bar);
+        
+        this.pack();
+        this.setVisible(true);
+        this.addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+            
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                Random ran = new Random();
+                int rnd2 = ran.nextInt(10)/3;
+                
+                if(rnd2 == 0)
+                {if(ke.getKeyChar() == 'a')
+                    bar.fill();}//키를 누를때마다 바가 1씩 증가
+                if(rnd2 == 1)
+                {if(ke.getKeyChar() == 's')
+                    bar.fill();}//키를 누를때마다 바가 1씩 증가
+                if(rnd2 == 2)
+                {if(ke.getKeyChar() == 'd')
+                    bar.fill();}//키를 누를때마다 바가 1씩 증가
+                if(rnd2 == 3)
+                {if(ke.getKeyChar() == 'f')
+                    bar.fill();}
+            }
+            @Override
+            public void keyReleased(KeyEvent ke) {
+            }
+        });
+        this.setLocationRelativeTo(null);
+        this.setSize(350,200);
+        this.setVisible(true);
+        this.requestFocus();//키 처리권 부여
+        ConsumerThread th = new ConsumerThread(bar);//스레드 생성
+        th.start();//스레드 시작
+    }
 }
