@@ -69,8 +69,7 @@ class ButtonMenu{
 		menu.setVisible(true); //프레임 보이도록 설정
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //X버튼 눌렀을 때 닫히도록 설정
 		b1.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				//new Print("                 Fishing!!");
+			public void actionPerformed(ActionEvent e){;
 			}
 		});//b1 ActionListener
 		b2.addActionListener(new ActionListener(){
@@ -97,11 +96,11 @@ class ButtonMenu{
 }//ButtonMenu
 class Shopping{
 	JButton beginner = new JButton("beginner");
-	JLabel beginnerPrice = new JLabel("100000");
+	JLabel beginnerPrice = new JLabel("         100000");
 	JButton intermediate = new JButton("intermediate");
-	JLabel intermediatePrice = new JLabel("500000");
+	JLabel intermediatePrice = new JLabel("         500000");
 	JButton advanced = new JButton("advanced");
-	JLabel advancedPrice = new JLabel("1000000");
+	JLabel advancedPrice = new JLabel("         1000000");
 	public Shopping(User user){
 		JFrame shop = new JFrame("SHOP");
 		shop.setLayout(new GridLayout(1,3));
@@ -123,35 +122,44 @@ class Shopping{
 		shop.add(panel2);
 		shop.add(panel3);
 
+		shop.pack();
+        shop.setVisible(true);
+
 		beginner.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(user.getBalance()>100000)
-					user.setBalance(-100000);
+				if(user.getMoney()>100000){
+					user.setMoney(-100000);
+					new Print("Shopping","초급 낚시대 구매에 성공하였습니다");
+				}
 				else
-					new Print("Shopping","Not enough balane!");
+					new Print("Shopping","Not enough balance!");
 			}
 		});
 		intermediate.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(user.getBalance()>500000)
-					user.setBalance(-500000);
+				if(user.getMoney()>500000){
+					user.setMoney(-500000);
+					new Print("Shopping","중급 낚시대 구매에 성공하였습니다");
+				}
 				else
-					new Print("Shopping","Not enough balane!");
+					new Print("Shopping","Not enough balance!");
 			}
 		});
 		advanced.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				if(user.getBalance()>1000000)
-					user.setBalance(-1000000);
+				if(user.getMoney()>1000000){
+					user.setMoney(-1000000);
+					new Print("Shopping","고급 낚시대 구매에 성공하였습니다");
+				}
 				else
-					new Print("Shopping","Not enough balane!");
+					new Print("Shopping","Not enough balance!");
 			}
 		});
 	}
 }
 class SaveFile{
 	public SaveFile(User user){
-		new Print("saveFile","              Saved:)");
+		new Print("saveFile","Saved:)");
 		String fileName= "user.txt";
 		PrintWriter outputStream= null;
 		try{
@@ -172,13 +180,14 @@ class SaveFile{
 class Print{
     public Print(String frameName, String message){
         Dimension dim = new Dimension(300,100);
-        JFrame frame = new JFrame(frameName);
+		JFrame frame = new JFrame(frameName);
+		frame.setLayout(new BorderLayout());
         frame.setLocation(300,400);
         frame.setPreferredSize(dim);
 
         JLabel label = new JLabel();
-        label.setText(message);
-        frame.add(label);
+        label.setText("                "+message);
+        frame.add(label,BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
 	}//Print()
