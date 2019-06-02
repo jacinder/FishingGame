@@ -1,8 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.io.File;
 import java.util.Scanner;
 import java.awt.*;
@@ -13,8 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
 class Main2{
 	public static int money;
@@ -69,6 +65,7 @@ class ButtonMenu{
 		menu.add(b4);
 		menu.add(b5);
 		
+		menu.setLocation(100,100);
 		menu.setSize(300, 400); 
 		menu.setVisible(true); 
 		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -88,7 +85,7 @@ class ButtonMenu{
 		});//b3 ActionListener
 		b4.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Ask();
+				new Ask(user);
 			}
 		});//b4 ActionListener
 		b5.addActionListener(new ActionListener(){
@@ -195,24 +192,31 @@ class Print{
 	}//Print()
 }//Print
 class Help{
-	public Help(String selected){
-		Dimension dim = new Dimension(600,200);
+	public Help(String selected,User user){
+		Dimension dim;
 		JLabel label = new JLabel();
 		JFrame frame = new JFrame("fishing game");
 		JButton button = new JButton("confirm");
 		frame.setLocation(300,400);
-		frame.setPreferredSize(dim);
-		
+	
 		int selectHelp = Integer.parseInt(selected);
 		if(selectHelp == 1){
-            label.setText("<html>Salmon<br/>Flatfish<br/>Squid<br/>Octopus<br/>Minnow<br/>Shrimp<br/>Carp<br/>Tuna<br/>Mackerel<br/>Saury</html>");
+			dim = new Dimension(200,400);
+            label.setText("<html>| Salmon<br/>| Flatfish<br/>| Squid<br/>| Octopus<br/>| Minnow<br/>| Shrimp<br/>| Carp<br/>| Tuna<br/>| Mackerel<br/>| Saury</html>");
 		}else if (selectHelp == 2){
-			label.setText("<html>Fishing nod lists:<br/>beginner<br/>intermediate<br/>advanced<br/></html>");
+			dim = new Dimension(200,200);
+			label.setText("<html>| Fishing nod lists:<br/>| beginner<br/>| intermediate<br/>| advanced<br/></html>");
         }else if (selectHelp == 3){
-			label.setText("<html>This program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester<br/>This game is also supported by Prof. Ahn in Handong Global University<br/>Any inquries, just Contact us: Handong@hanodong.edu</html>");
-        }else{
+			dim = new Dimension(700,200);
+			label.setText("<html>| This program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee<br/>| for Java Team Project in 2019 spring semester<br/>| This game is also supported by Prof. Ahn in Handong Global University<br/>| Any inquries, just Contact us: Handong@hanodong.edu</html>");
+		}else if (selectHelp == 4){
+			dim = new Dimension(200,200);
+			label.setText("<html>Your name: "+user.getName()+"<br/>Your money: "+user.getMoney()+"<br/>Your rodLevel: "+user.getRodLevel()+"</html>");
+		}else{
+			dim = new Dimension(200,200);
             new Print("warining","\nYou entered wrong option");
 		}
+		frame.setPreferredSize(dim);
 		frame.setLayout(new BorderLayout());
 		frame.add(label,BorderLayout.CENTER);
 		frame.add(button,BorderLayout.SOUTH);
@@ -227,24 +231,21 @@ class Help{
 	}
 }
 class Ask{
-	Ask(){
+	Ask(User user){
 		Dimension dim = new Dimension(600,200);
 		JFrame frame = new JFrame("askmenu");
 		JButton button = new JButton("ENTER");
 		JLabel label = new JLabel();
 		JTextField text = new JTextField();
 
-		label.setText("<html>Creator: How can I help you?<br/>1: Show me the fish list<br/>2: Show me the fishing nod list<br/>3: Show me the creators who made this prgoram<br/></html>");
+		label.setText("<html>| Creator: How can I help you?<br/>| 1: Show me the fish list<br/>| 2: Show me the fishing nod list<br/>| 3: Show me the creators who made this prgoram<br/>| 4:Your current information</html>");
 		
 		frame.setLocation(300,400);
 		frame.setPreferredSize(dim);
 
 		frame.setLayout(new BorderLayout());
-		//label.setBounds(300, 500, 300, 300);
 		frame.add(label,BorderLayout.CENTER);
-		//text.setBounds(300,200,100,100);
 		frame.add(text,BorderLayout.SOUTH);
-		//button.setBounds(300,100,100,100);
 		frame.add(button,BorderLayout.EAST);
 
 		frame.pack();
@@ -252,7 +253,7 @@ class Ask{
 
 		button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
-				new Help(text.getText());
+				new Help(text.getText(),user);
 				frame.dispose();
 			}
 		});//button ActionListener
@@ -261,7 +262,7 @@ class Ask{
 class Intro{
     public Intro(String[] fishArray){
 		JFrame frame = new JFrame("Move Label");
-		JTextField name = new JTextField("Your name here");
+		JTextField name = new JTextField();
 		JButton enter = new JButton("ENTER");
 		MyPanel panel=new MyPanel();
 
@@ -282,9 +283,9 @@ class Intro{
 				frame.dispose();
 			}
 		});
-		
 		frame.pack();
-        frame.setLocationRelativeTo(null);
+		frame.setLocationRelativeTo(null);
+		frame.setLocation(100,100);
         frame.setSize(800,500);
 		frame.setVisible(true);
     }
