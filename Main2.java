@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.ImageIcon;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
 class Main2{
 	public static int money;
 	public static int rodLevel;
@@ -183,9 +181,11 @@ class SaveFile{
 }//SaveFile
 class Print{
     public Print(String frameName, String message){
+        Dimension dim = new Dimension(300,100);
 		JFrame frame = new JFrame(frameName);
 		frame.setLayout(new BorderLayout());
         frame.setLocation(300,400);
+        frame.setPreferredSize(dim);
 
         JLabel label = new JLabel();
         label.setText("                "+message);
@@ -211,7 +211,7 @@ class Help{
         }else if (selectHelp == 3){
 			label.setText("<html>This program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester<br/>This game is also supported by Prof. Ahn in Handong Global University<br/>Any inquries, just Contact us: Handong@hanodong.edu</html>");
         }else{
-            System.out.println("\nYou entered wrong option");
+            new Print("warining","\nYou entered wrong option");
 		}
 		frame.setLayout(new BorderLayout());
 		frame.add(label,BorderLayout.CENTER);
@@ -261,8 +261,8 @@ class Ask{
 class Intro{
     public Intro(String[] fishArray){
 		JFrame frame = new JFrame("Move Label");
-		JTextField name = new JTextField();
-		JButton enter = new JButton();
+		JTextField name = new JTextField("Your name here");
+		JButton enter = new JButton("ENTER");
 		MyPanel panel=new MyPanel();
 
         frame.setTitle("Enter your name");
@@ -277,12 +277,15 @@ class Intro{
 				String userName = name.getText();
 				Main2.setUserName(userName);
 				User user = new User(userName, Main2.money, Main2.rodLevel);
+				//new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
 				new ButtonMenu(user,fishArray);
 				frame.dispose();
 			}
 		});
+		
+		frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setSize(500,500);
+        frame.setSize(800,500);
 		frame.setVisible(true);
     }
     class MyPanel extends JPanel{
@@ -291,13 +294,12 @@ class Intro{
       public void paintComponent(Graphics g){
 			super.paintComponent(g);
 			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
-			g.setFont(new Font("myFont",Font.ITALIC ,30));
-			g.setColor(Color.blue);
-			g.drawString("Fishing Game <><", 120, 100);
-			g.setFont(new Font("secondFont",Font.ITALIC,20));
-			g.setColor(Color.black);
-			g.drawString("GameStart",130,250);
-			g.drawString("Quit",130,300);
+			g.setFont(new Font("myFont",Font.BOLD ,50));
+			g.setColor(Color.BLACK);
+			g.drawString("Fishing Game", 200, 70);
+			g.setFont(new Font("secondFont",Font.PLAIN,20));
+			g.setColor(Color.WHITE);
+			g.drawString("Enter your name to start the game",10,430);
            }
 	}
 	
