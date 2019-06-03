@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.Random;
 
 class Main2{
 	public static int money;
@@ -58,21 +59,21 @@ class ButtonMenu{
 	JButton b3 = new JButton("SAVE");
 	JButton b4 = new JButton("HELP");
 	JButton b5 = new JButton("EXIT");
-    
+
     public ButtonMenu(User user, String[] fishArray)
 	{
-		JFrame menu = new JFrame("Fishing game"); 
-		menu.setLayout(new GridLayout(5,1)); 
+		JFrame menu = new JFrame("Fishing game");
+		menu.setLayout(new GridLayout(5,1));
 		menu.add(b1);
 		menu.add(b2);
 		menu.add(b3);
 		menu.add(b4);
 		menu.add(b5);
-		
+
 		menu.setLocation(100,100);
-		menu.setSize(300, 400); 
-		menu.setVisible(true); 
-		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		menu.setSize(300, 400);
+		menu.setVisible(true);
+		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		b1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				MyLabel bar = new MyLabel(20);
@@ -137,6 +138,7 @@ class Shopping{
 			public void actionPerformed(ActionEvent e){
 				if(user.getMoney()>100000){
 					user.setMoney(-100000);
+					user.setRodLevel(1);
 					new Print("Shopping","Success to buy beginner fishing rod");
 				}
 				else
@@ -147,6 +149,7 @@ class Shopping{
 			public void actionPerformed(ActionEvent e){
 				if(user.getMoney()>500000){
 					user.setMoney(-500000);
+					user.setRodLevel(2);
 					new Print("Shopping","Success to buy intermediate fishing rod");
 				}
 				else
@@ -157,6 +160,7 @@ class Shopping{
 			public void actionPerformed(ActionEvent e){
 				if(user.getMoney()>1000000){
 					user.setMoney(-1000000);
+					user.setRodLevel(3);
 					new Print("Shopping","Success to buy advanced fishing rod");
 				}
 				else
@@ -205,7 +209,7 @@ class Help{
 		JFrame frame = new JFrame("fishing game");
 		JButton button = new JButton("confirm");
 		frame.setLocation(300,400);
-	
+
 		int selectHelp = Integer.parseInt(selected);
 		if(selectHelp == 1){
 			dim = new Dimension(200,400);
@@ -234,7 +238,7 @@ class Help{
 				frame.dispose();
 			}
 		});
-		
+
 	}
 }
 class Ask{
@@ -246,7 +250,7 @@ class Ask{
 		JTextField text = new JTextField();
 
 		label.setText("<html>| Creator: How can I help you?<br/>| 1: Show me the fish list<br/>| 2: Show me the fishing nod list<br/>| 3: Show me the creators who made this prgoram<br/>| 4:Your current information</html>");
-		
+
 		frame.setLocation(300,400);
 		frame.setPreferredSize(dim);
 
@@ -275,7 +279,7 @@ class Intro{
 
         frame.setTitle("Enter your name");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		frame.add(panel,BorderLayout.CENTER);
 		frame.add(name,BorderLayout.SOUTH);
 		frame.add(enter,BorderLayout.EAST);
@@ -296,6 +300,7 @@ class Intro{
         frame.setSize(800,500);
 		frame.setVisible(true);
     }
+
     class MyPanel extends JPanel{
       ImageIcon icon=new ImageIcon("fishing.jpg");
       Image img=icon.getImage();
@@ -311,15 +316,25 @@ class Intro{
            }
 	}
 }
+
 class MyLabel extends JLabel{
     int barSize=0;//바의 크기
     int maxBarSize; //바의 맥스 사이즈
-    JFrame fishingFrame;
-    MyLabel(int maxBarSize){
+    JFrame frame;
+		boolean success=false;
+
+		JFrame frame2 = new JFrame("Message");
+		//JTextField name = new JTextField();
+		JButton enter = new JButton("ENTER");
+		User user;
+
+
+    MyLabel(int maxBarSize,User user){
         this.maxBarSize=maxBarSize;
+				this.user = user;
     }
     public void setFrame(JFrame frame){
-        this.fishingFrame = frame;
+        this.frame = frame;
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -331,7 +346,13 @@ class MyLabel extends JLabel{
     synchronized void fill(){
         if(barSize==maxBarSize){
             try{
-                fishingFrame.dispose();
+							success=true;
+							Fishing fishing = new Fishing(user,success);//랜덤으로 물고기 잡기-fishing실행
+							JLabel text = new JLabel(fishing.getMessage());
+			        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+							frame2.add(text,BorderLayout.CENTER);
+							frame2.add(enter,BorderLayout.EAST);
+							frame.dispose();
             }
             catch(Exception e){
                 return;
@@ -378,16 +399,16 @@ class TabAndThreadEx{
     MyLabel bar;//바의 최대 크기를 100으로 지정
 	JLabel letter = new JLabel("        click");
 	JButton button = new JButton("Return to home");
-    
+
     TabAndThreadEx(MyLabel bar){
         this.bar = bar;
         fishing.setTitle("아무키나 빨리 눌러 바 채우기");
         //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
         fishing.setLayout(new GridLayout(3,1));
-        
+
         JLabel text = new JLabel("<html> Press 'a','s','d' and 'f' at the same time</br>to wind your fishing rod</html>");
         fishing.add(text);
-        
+
         bar.setBackground(Color.ORANGE);
         bar.setOpaque(true);
         bar.setLocation(20, 50);
@@ -399,19 +420,19 @@ class TabAndThreadEx{
 				fishing.dispose();
 			}
 		});
-        
+
         fishing.pack();
         fishing.setVisible(true);
         fishing.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent ke) {
             }
-            
+
             @Override
             public void keyPressed(KeyEvent ke) {
                 Random ran = new Random();
                 int rnd2 = ran.nextInt(10)/3;
-                
+
                 if(rnd2 == 0)
                 {if(ke.getKeyChar() == 'a')
                     bar.fill();}//키를 누를때마다 바가 1씩 증가
@@ -437,3 +458,41 @@ class TabAndThreadEx{
         th.start();//스레드 시작
     }
 }
+
+
+class Fishing{//물고기이름과 무게 리턴
+
+	int randomInt =0;
+	double fishWeight = 0.0;
+	int fishPrice = 0;
+	String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
+	boolean success=false;
+	String s=null;
+	int rodLevel=0;
+
+	public Fishing(User user,boolean success){
+		rodLevel=user.getRodLevel();
+		this.success=success;
+
+		try{
+				randomInt = random.nextInt(fishArray.length -1);
+				fishWeight = 10 * random.nextDouble() + 1;
+				fishPrice = (int)(fishWeight * 10000 * user.getRodLevel());
+
+						if(!success){//낚시 실패하면
+								String s="The fish you just missed: "+fishArray[randomInt]+" Weight: "+fishWeight+" Price: " + fishPrice + " Won";
+						}
+						else {//낚시 성공시
+								String s="The fish you just caught: " + fishArray[randomInt]+" Wegiht: "+fishWeight+" Price: " + fishPrice + " Won";
+								user.setMoney(fishPrice);
+							}
+				}//try
+			catch(Exception e){
+						System.out.println(e);
+					}
+			}
+
+			public String getMessage(){
+				return s;
+			}
+		}
