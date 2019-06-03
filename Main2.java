@@ -76,8 +76,8 @@ class ButtonMenu{
 		b1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				MyLabel bar = new MyLabel(20);
-				TabAndThreadEx frame = new TabAndThreadEx(bar);
-				bar.setFrame(frame);
+				TabAndThreadEx fishingThread = new TabAndThreadEx(bar);
+				bar.setFrame(fishingThread.fishing);
 			}
 		});//b1 ActionListener
 		b2.addActionListener(new ActionListener(){
@@ -314,12 +314,12 @@ class Intro{
 class MyLabel extends JLabel{
     int barSize=0;//바의 크기
     int maxBarSize; //바의 맥스 사이즈
-    JFrame frame;
+    JFrame fishingFrame;
     MyLabel(int maxBarSize){
         this.maxBarSize=maxBarSize;
     }
     public void setFrame(JFrame frame){
-        this.frame = frame;
+        this.fishingFrame = frame;
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -331,7 +331,7 @@ class MyLabel extends JLabel{
     synchronized void fill(){
         if(barSize==maxBarSize){
             try{
-                frame.dispose();
+                fishingFrame.dispose();
             }
             catch(Exception e){
                 return;
@@ -373,28 +373,36 @@ class ConsumerThread extends Thread{
         }
     }
 }
-class TabAndThreadEx extends JFrame{
+class TabAndThreadEx{
+	JFrame fishing = new JFrame();
     MyLabel bar;//바의 최대 크기를 100으로 지정
-    JLabel letter = new JLabel("        click");
+	JLabel letter = new JLabel("        click");
+	JButton button = new JButton("Return to home");
     
     TabAndThreadEx(MyLabel bar){
         this.bar = bar;
-        this.setTitle("아무키나 빨리 눌러 바 채우기");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout(2,1));
+        fishing.setTitle("아무키나 빨리 눌러 바 채우기");
+        //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
+        fishing.setLayout(new GridLayout(3,1));
         
-        JLabel text = new JLabel("아무거나");
-        this.add(text);
+        JLabel text = new JLabel("<html> Press 'a','s','d' and 'f' at the same time</br>to wind your fishing rod</html>");
+        fishing.add(text);
         
         bar.setBackground(Color.ORANGE);
         bar.setOpaque(true);
         bar.setLocation(20, 50);
         bar.setSize(300,20);
-        this.add(bar);
+		fishing.add(bar);
+		fishing.add(button);
+		button.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				fishing.dispose();
+			}
+		});
         
-        this.pack();
-        this.setVisible(true);
-        this.addKeyListener(new KeyListener(){
+        fishing.pack();
+        fishing.setVisible(true);
+        fishing.addKeyListener(new KeyListener(){
             @Override
             public void keyTyped(KeyEvent ke) {
             }
@@ -421,10 +429,10 @@ class TabAndThreadEx extends JFrame{
             public void keyReleased(KeyEvent ke) {
             }
         });
-        this.setLocationRelativeTo(null);
-        this.setSize(350,200);
-        this.setVisible(true);
-        this.requestFocus();//키 처리권 부여
+        fishing.setLocationRelativeTo(null);
+        fishing.setSize(350,200);
+        fishing.setVisible(true);
+        fishing.requestFocus();//키 처리권 부여
         ConsumerThread th = new ConsumerThread(bar);//스레드 생성
         th.start();//스레드 시작
     }
