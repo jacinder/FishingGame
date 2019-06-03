@@ -68,7 +68,6 @@ class Main {
         int fishPrice = (int)(fishWeight * 10000 * user.getRodLevel());
         Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
         Fishing fishing = new Fishing();
-
         try
           {
               if(!fishing.getInput()){//낚시 실패하면
@@ -89,11 +88,6 @@ class Main {
               System.out.println(e);
           }
               System.out.println( "The fishing is over!\n" );
-
-
-
-
-
         break;
 
       case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
