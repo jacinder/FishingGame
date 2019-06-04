@@ -29,7 +29,7 @@ class loadFile{
       String buffer;
       int money=0;
       int rodLevel=1;
-       
+
       try{
          Scanner sc = new Scanner(file);
          buffer = sc.nextLine();
@@ -124,11 +124,11 @@ class Shopping{
       shop.setSize(800,500);
       shop.setLayout(new GridLayout(1,4));
 
-      beginner.setBackground(new Color(92,209,229)); 
+      beginner.setBackground(new Color(92,209,229));
       beginner.setOpaque(true); beginner.setBorderPainted(false);
-      intermediate.setBackground(new Color(103,153,255)); 
+      intermediate.setBackground(new Color(103,153,255));
       intermediate.setOpaque(true); intermediate.setBorderPainted(false);
-      advanced.setBackground(new Color(107,102,255)); 
+      advanced.setBackground(new Color(107,102,255));
       advanced.setOpaque(true); advanced.setBorderPainted(false);
       tuition.setBackground(new Color(200,200,255));
       tuition.setOpaque(true); tuition.setBorderPainted(false);
@@ -196,7 +196,7 @@ class Shopping{
            public void actionPerformed(ActionEvent e){
                if(user.getMoney()>3000000){
                    user.setMoney(-3000000);
-                   
+
                    new Print("Shopping","Success to tuition for Uni");
                }
                else
@@ -309,7 +309,7 @@ class Intro{
       JButton enter = new JButton("ENTER");
       MyPanel panel=new MyPanel();
 
-      enter.setBackground(new Color(103,153,255)); 
+      enter.setBackground(new Color(103,153,255));
 		enter.setOpaque(true); enter.setBorderPainted(false);
 
       frame.setTitle("Enter your name");
@@ -425,24 +425,35 @@ class Fishing{
     JLabel letter = new JLabel("        click");
     JButton button = new JButton("Return to home");
     char key;
-    
+
     Fishing (User user, String [] fishArray, MyLabel bar, char key, int rnd){
-        
+
         this.bar = bar;
         fishing.setTitle("아무키나 빨리 눌러 바 채우기");
         //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
         fishing.setLayout(new GridLayout(3,1));
-        
+
         JLabel text = new JLabel("<html> Press "+key+" to wind your fishing rod</html>");
         fishing.add(text);
         Timer timer = new Timer();
         TimerTask task = new TimerTask(){
             public void run(){
+                //실패메세지 남기기
                 fishing.dispose();
+                JFrame Message = new JFrame();
+                Message.pack();
+                Message.setLocation(100,100);
+                Message.setSize(350,200);
+                //Message.setLayout();
+                JLabel letter2 = new JLabel("fail!!!!!");
+                JButton button = new JButton("Return to home");
+                Message.add(letter2,BorderLayout.CENTER);
+                Message.add(button,BorderLayout.SOUTH);
+                Message.setVisible(true);
             }
         };
         timer.schedule(task, 4000);
-        
+
         bar.setBackground(Color.ORANGE);
         bar.setOpaque(true);
         bar.setLocation(20, 50);
@@ -454,7 +465,7 @@ class Fishing{
                 fishing.dispose();
             }
         });
-        
+
         //fishing.pack();
         fishing.setVisible(true);
         fishing.addKeyListener(new KeyListener(){
@@ -470,7 +481,8 @@ class Fishing{
             public void keyReleased(KeyEvent ke) {
             }
         });
-        fishing.setLocationRelativeTo(null);
+        //fishing.setLocationRelativeTo(null);
+        fishing.setLocation(100,100);
         fishing.setSize(350,200);
         fishing.setVisible(true);
         fishing.requestFocus();//키 처리권 부여
@@ -482,7 +494,7 @@ class Fishing{
 class MyLabel extends JLabel{
     int barSize=0;//바의 크기
     int maxBarSize; //바의 맥스 사이즈
-    
+
     JFrame fishingFrame;
     MyLabel(int maxBarSize){
         this.maxBarSize=maxBarSize;
@@ -500,7 +512,7 @@ class MyLabel extends JLabel{
     synchronized void fill(User user, String[] fishArray, int rnd){
         if(barSize==maxBarSize){
             try{
-                
+
                 fishingFrame.dispose();
                 user.setMoney (rnd*10000);
             }
