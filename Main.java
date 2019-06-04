@@ -4,6 +4,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 import javax.imageio.ImageIO;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class Main{
    public static int money;
@@ -27,6 +29,7 @@ class loadFile{
       String buffer;
       int money=0;
       int rodLevel=1;
+       
       try{
          Scanner sc = new Scanner(file);
          buffer = sc.nextLine();
@@ -75,8 +78,8 @@ class ButtonMenu{
       b1.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e){
               Random ran = new Random();
-              int rnd = ran.nextInt(26)+65;
-              char key = (char)(rnd + '0');
+              int rnd = ran.nextInt(94)+33;
+              char key = (char)(rnd);
               MyLabel bar = new MyLabel(20);
               Fishing fishingThread = new Fishing(user,fishArray,bar,key,rnd);
               bar.setFrame(fishingThread.fishing);
@@ -412,6 +415,13 @@ class Fishing{
         
         JLabel text = new JLabel("<html> Press "+key+" to wind your fishing rod</html>");
         fishing.add(text);
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask(){
+            public void run(){
+                fishing.dispose();
+            }
+        };
+        timer.schedule(task, 4000);
         
         bar.setBackground(Color.ORANGE);
         bar.setOpaque(true);
@@ -472,7 +482,7 @@ class MyLabel extends JLabel{
             try{
                 
                 fishingFrame.dispose();
-                user.setMoney (10000);
+                user.setMoney (rnd*10000);
             }
             catch(Exception e){
                 return;
