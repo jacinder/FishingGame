@@ -26,6 +26,7 @@ class Main2{
 		Random random = new Random();
 		loadFile file = new loadFile();
 		new Intro(fishArray);
+		new FishingIntro(User user);
 	}
 	public static void setUserName(String userName) {
 		Main2.userName = userName;
@@ -58,29 +59,29 @@ class ButtonMenu{
 	JButton b3 = new JButton("SAVE");
 	JButton b4 = new JButton("HELP");
 	JButton b5 = new JButton("EXIT");
-    
+
     public ButtonMenu(User user, String[] fishArray)
 	{
-		JFrame menu = new JFrame("Fishing game"); 
-		menu.setLayout(new GridLayout(5,1)); 
+		JFrame menu = new JFrame("Fishing game");
+		menu.setLayout(new GridLayout(5,1));
 		menu.add(b1);
 		menu.add(b2);
 		menu.add(b3);
 		menu.add(b4);
 		menu.add(b5);
-		
+
 		menu.setLocation(100,100);
         menu.setSize(800,500);
-		menu.setVisible(true); 
-		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		menu.setVisible(true);
+		menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		b1.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				Random ran = new Random();
 				int rnd = ran.nextInt(26)+65;
-				char key = (char)(rnd + '0'); 
+				char key = (char)(rnd + '0');
 				MyLabel bar = new MyLabel(20);
-				TabAndThreadEx fishingThread = new TabAndThreadEx(bar,key);
-				bar.setFrame(fishingThread.fishing);
+				//TabAndThreadEx fishingThread = new TabAndThreadEx(bar,key);
+				//bar.setFrame(fishingThread.fishing);
 			}
 		});//b1 ActionListener
 		b2.addActionListener(new ActionListener(){
@@ -105,6 +106,55 @@ class ButtonMenu{
 		});//b5 ActionListener
 	}//ButtonThree()
 }//ButtonMenu
+
+
+class FishingIntro{
+    public FishingIntro(User user){
+		JFrame frame = new JFrame("Fishing");
+		JTextField name = new JTextField();
+		//JButton enter = new JButton("ENTER");
+		MyPanel panel=new MyPanel();
+
+        frame.setTitle("Fishing Screen");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		frame.add(panel,BorderLayout.CENTER);
+		frame.add(name,BorderLayout.SOUTH);
+		//frame.add(enter,BorderLayout.EAST);
+
+		/*enter.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				String userName = name.getText();
+				Main2.setUserName(userName);
+				User user = new User(userName, Main2.money, Main2.rodLevel);
+				//new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
+				new ButtonMenu(user,fishArray);
+				frame.dispose();
+			}
+		});*/
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setLocation(100,100);
+        frame.setSize(800,500);
+		frame.setVisible(true);
+    }
+
+    class MyPanel extends JPanel{
+      ImageIcon icon=new ImageIcon("sea.jpg");
+      Image img=icon.getImage();
+      public void paintComponent(Graphics g){
+			super.paintComponent(g);
+			g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+			g.setFont(new Font("myFont",Font.BOLD ,50));
+			g.setColor(Color.BLACK);
+			g.drawString("HaHaHaHaHa Let's start", 200, 70);
+			g.setFont(new Font("secondFont",Font.PLAIN,20));
+			g.setColor(Color.WHITE);
+			g.drawString("Enter the key",10,430);
+           }
+	}
+}
+
 class Shopping{
 	JButton beginner = new JButton("beginner");
 	JLabel beginnerPrice = new JLabel("                 100000");
@@ -212,7 +262,7 @@ class Help{
 		JButton button = new JButton("confirm");
 		frame.setLocation(100,100);
         frame.setSize(800,500);
-	
+
 		int selectHelp = Integer.parseInt(selected);
 		if(selectHelp == 1){
             label.setText("<html>| Salmon<br/>| Flatfish<br/>| Squid<br/>| Octopus<br/>| Minnow<br/>| Shrimp<br/>| Carp<br/>| Tuna<br/>| Mackerel<br/>| Saury</html>");
@@ -246,7 +296,7 @@ class Ask{
 		JTextField text = new JTextField();
 
 		label.setText("<html>| Creator: How can I help you?<br/>| 1: Show me the fish list<br/>| 2: Show me the fishing nod list<br/>| 3: Show me the creators who made this prgoram<br/>| 4:Your current information</html>");
-		
+
 		frame.setLocation(100,100);
         frame.setSize(800,500);
 
@@ -275,7 +325,7 @@ class Intro{
 
         frame.setTitle("Enter your name");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		frame.add(panel,BorderLayout.CENTER);
 		frame.add(name,BorderLayout.SOUTH);
 		frame.add(enter,BorderLayout.EAST);
@@ -310,118 +360,4 @@ class Intro{
 			g.drawString("Enter your name to start the game",10,430);
            }
 	}
-}
-class MyLabel extends JLabel{
-    int barSize=0;//바의 크기
-    int maxBarSize; //바의 맥스 사이즈
-    JFrame fishingFrame;
-    MyLabel(int maxBarSize){
-        this.maxBarSize=maxBarSize;
-    }
-    public void setFrame(JFrame frame){
-        this.fishingFrame = frame;
-    }
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(Color.darkGray);
-        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
-        if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
-        g.fillRect(0,0,width,this.getHeight());
-    }
-    synchronized void fill(){
-        if(barSize==maxBarSize){
-            try{
-                fishingFrame.dispose();
-            }
-            catch(Exception e){
-                return;
-            }
-        }
-        barSize++;
-        this.repaint();//바 다시그리기
-        this.notify();//기다리는 ConsumerThread 스레드 깨우기
-    }
-    synchronized void consume(){
-        if(barSize==0){
-            try{
-                this.wait();//바의 크기가 0이면 바의 크기가 0보다 커질때까지 대기
-            }
-            catch(Exception e){
-                return;
-            }
-        }
-        barSize--;
-        this.repaint();//바 다시 그리기
-        this.notify();//기다리는 이벤트 스레드 깨우기
-    }
-}
-
-class ConsumerThread extends Thread{
-    MyLabel con;
-    ConsumerThread(MyLabel con){
-        this.con=con;
-    }
-    public void run(){
-        while(true){
-            try{
-                sleep(500);
-                con.consume();//0.2초마다 바를 1씩 줄인다.
-            }
-            catch(Exception e){
-                return;
-            }
-        }
-    }
-}
-class TabAndThreadEx{
-	JFrame fishing = new JFrame();
-    MyLabel bar;//바의 최대 크기를 100으로 지정
-	JLabel letter = new JLabel("        click");
-	JButton button = new JButton("Return to home");
-	char key;
-    
-    TabAndThreadEx(MyLabel bar,char key){
-		this.key = key;
-        this.bar = bar;
-        fishing.setTitle("아무키나 빨리 눌러 바 채우기");
-        //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
-        fishing.setLayout(new GridLayout(3,1));
-        
-        JLabel text = new JLabel("<html> Press "+key+" to wind your fishing rod</html>");
-        fishing.add(text);
-        
-        bar.setBackground(Color.ORANGE);
-        bar.setOpaque(true);
-        bar.setLocation(20, 50);
-        bar.setSize(300,20);
-		fishing.add(bar);
-		fishing.add(button);
-		button.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				fishing.dispose();
-			}
-		});
-        
-        //fishing.pack();
-        fishing.setVisible(true);
-        fishing.addKeyListener(new KeyListener(){
-            @Override
-            public void keyTyped(KeyEvent ke) {
-            }
-            @Override
-            public void keyPressed(KeyEvent ke) {
-                if(ke.getKeyChar() == key)
-                    bar.fill();
-            }
-            @Override
-            public void keyReleased(KeyEvent ke) {
-            }
-        });
-        fishing.setLocationRelativeTo(null);
-        fishing.setSize(350,200);
-        fishing.setVisible(true);
-        fishing.requestFocus();//키 처리권 부여
-        ConsumerThread th = new ConsumerThread(bar);//스레드 생성
-        th.start();//스레드 시작
-    }
 }
