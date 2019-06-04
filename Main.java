@@ -1,252 +1,516 @@
-import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.io.File;
+import java.io.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.util.*;
+import javax.imageio.ImageIO;
 
+class Main{
+   public static int money;
+   public static int rodLevel;
+   private static String userName;
 
-class Main {
-  public static void main(String[] args) {
-    String userName;
-    String fileName= "user.txt";
-    Scanner keyboard = new Scanner(System.in);
-    Random random = new Random();
-
-    //물고기 배열
+    public static void main(String[] args){
       String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
-      //이야기의 시작
-    //이야기의 시작
-	  System.out.print("What is your name? >> ");
-    userName = keyboard.next();
-    //파일 불러오기
-    File file = new File(fileName);
-    String buffer;
-    int money=0;
-    int rodLevel=1;
-    try{
-      Scanner sc = new Scanner(file);
-      buffer = sc.nextLine(); //돈
-      money = Integer.parseInt(buffer);
-      buffer = sc.nextLine(); //로드레벨
-      rodLevel = Integer.parseInt(buffer);
-      sc.close();
-    }//try문 닫는 괄호
-    catch(FileNotFoundException e){
-      System.out.println("Error occurred while trying to read the file");
+      Random random = new Random();
+      loadFile file = new loadFile();
+      new Intro(fishArray);
+   }
+   public static void setUserName(String userName) {
+      Main.userName = userName;
+   }
+}
+class loadFile{
+   public loadFile(){
+      String fileName= "user.txt";
+      File file = new File(fileName);
+      String buffer;
+      int money=0;
+      int rodLevel=1;
+      try{
+         Scanner sc = new Scanner(file);
+         buffer = sc.nextLine();
+         Main.money = Integer.parseInt(buffer);
+         buffer = sc.nextLine();
+         Main.rodLevel = Integer.parseInt(buffer);
+         sc.close();
+      }
+      catch(FileNotFoundException e){
+         System.out.println("Error occurred while trying to read the file");
       //file.createNewFile();
-    }
-    User user = new User(userName, money, rodLevel);
-   	System.out.println("In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-//콘솔창 clear
-//타이틀
-    System.out.println("\t The king of Fisherman " + userName + "!");
-    System.out.println();
-//콘솔창 clear
-    boolean gameEND = false;
-    int menu;
+      }
+   }
+}
+class ButtonMenu{
+   JButton b1 = new JButton("FISHING");
+   JButton b2 = new JButton("SHOP");
+   JButton b3 = new JButton("SAVE");
+   JButton b4 = new JButton("HELP");
+   JButton b5 = new JButton("EXIT");
 
-//반복문 안에 메뉴 선택 스위치문으로
-    while(!gameEND){
-    	// 메뉴선택
-        System.out.println("\t" + userName + "(Current Money: " + user.getMoney() + " | Rod Level: " + user.getRodLevel() + ")");
-        System.out.println("\t1. Go Fishing");
-        System.out.println("\t2. Go Store");
-        System.out.println("\t3. Save");
-        System.out.println("\t4. Help");
-        System.out.println("\t5. Exit");
-        System.out.print("\t>> ");
+    public ButtonMenu(User user, String[] fishArray)
+   {
+      JFrame menu = new JFrame("Fishing game");
+      menu.setLayout(new GridLayout(5,1));
+      b1.setBackground(new Color(212,244,250));
+		menu.add(b1);
+		b2.setBackground(new Color(228,247,186));
+		menu.add(b2);
+		b3.setBackground(new Color(250,244,192));
+		menu.add(b3);
+		b4.setBackground(new Color(255,217,250));
+		menu.add(b4);
+		b5.setBackground(new Color(232,217,255));
+		menu.add(b5);
+		b1.setOpaque(true); b1.setBorderPainted(false);
+		b2.setOpaque(true); b2.setBorderPainted(false);
+		b3.setOpaque(true); b3.setBorderPainted(false);
+		b4.setOpaque(true); b4.setBorderPainted(false);
+		b5.setOpaque(true); b5.setBorderPainted(false);
 
-      menu = keyboard.nextInt();
-      // 콘솔창 clear
-      switch(menu){
-      case 1: // 낚시하러 수정해야할 것: 초반에 돈이 없어서 프라이스 가격이 안만들어지네요ㅜ
-      //Fish fish = new Fish(랜덤한 물고기 이름, 랜덤한 물고기 무게);
-        int randomInt = random.nextInt(fishArray.length -1);
-        double fishWeight = 10 * random.nextDouble() + 1;
-        int fishPrice = (int)(fishWeight * 10000 * user.getRodLevel());
-        Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
-        Fishing fishing = new Fishing();
-        try
-          {
-              if(!fishing.getInput()){//낚시 실패하면
-                  System.out.println("The fish you just missed: " + fishArray[randomInt]);
-                  System.out.printf("Weight: %.2fkg\n", fishWeight);
-                  System.out.println("Price: " + fishPrice + " Won");
-
-              }else{ //낚시 성공시
-                  System.out.println("The fish you just caught: " + fishArray[randomInt]);
-                  System.out.printf("Wegiht: %.2fkg\n", fishWeight);
-                  System.out.println("Price: " + fishPrice + " Won");
-                  user.setMoney(fishPrice);
-              }
-
+      menu.setLocation(100,100);
+      menu.setSize(800,500);
+      menu.setVisible(true);
+      menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      b1.addActionListener(new ActionListener(){
+          public void actionPerformed(ActionEvent e){
+              Random ran = new Random();
+              int rnd = ran.nextInt(26)+65;
+              char key = (char)(rnd + '0');
+              MyLabel bar = new MyLabel(20);
+              Fishing fishingThread = new Fishing(user,fishArray,bar,key,rnd);
+              bar.setFrame(fishingThread.fishing);
           }
-              catch(Exception e)
-          {
-              System.out.println(e);
-          }
-              System.out.println( "The fishing is over!\n" );
-        break;
+      });//b1 ActionListener
+      b2.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            new Shopping(user);
+         }
+      });//b2 ActionListener
+      b3.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            new SaveFile(user);
+         }
+      });//b3 ActionListener
+      b4.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            new Ask(user);
+         }
+      });//b4 ActionListener
+      b5.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            System.exit(0);
+         }
+      });//b5 ActionListener
+   }//ButtonThree()
+}//ButtonMenu
 
-      case 2: // 상점으로  유저의 돈을 파라미터로 받아서 계산하는 buy 메소드 추가해야해야할 것 같음
 
-      	Rod rod = new Rod ();
-      	rod.messageStore();
-      	Scanner key = new Scanner(System.in);
-		int selectRod = key.nextInt();
-        rod.setName(selectRod);
-        rod.setPrice(selectRod);
-      	int currentMoney= user.getMoney() - rod.getPrice();
-        if(currentMoney <0){
-            System.out.println("The money you have isn't enough");
-        }else{
-            user.setStore(rod.getPrice()); //파라미터로 넣은 값만큼 현재 금액에서 자동적으로 빼줌
-            System.out.println(rod.getName() + " You got new fishing rod!");}
-      	break;
+class Shopping{
+   JButton beginner = new JButton("beginner");
+   JLabel beginnerPrice = new JLabel("             100000");
+   JButton intermediate = new JButton("intermediate");
+   JLabel intermediatePrice = new JLabel("             500000");
+   JButton advanced = new JButton("advanced");
+   JLabel advancedPrice = new JLabel("             1000000");
+   public Shopping(User user){
+      JFrame shop = new JFrame("SHOP");
+      shop.setLocation(100,100);
+      shop.setSize(800,500);
+      shop.setLayout(new GridLayout(1,3));
 
-      case 3: //저장하기
-      	savefile(user);
-      	break;
+      beginner.setBackground(new Color(92,209,229)); 
+      beginner.setOpaque(true); beginner.setBorderPainted(false);
+      intermediate.setBackground(new Color(103,153,255)); 
+		intermediate.setOpaque(true); intermediate.setBorderPainted(false);
+      advanced.setBackground(new Color(107,102,255)); 
+		advanced.setOpaque(true); advanced.setBorderPainted(false);
 
-      case 4: //물고기 리스트, 낚시대 리스트 등
-        int selectHelp;
-        int count = 0;
-        System.out.println("Creator: How can I help you?\n");
-        System.out.println("1: Show me the fish list");
-        System.out.println("2: Show me the fishing nod list");
-        System.out.println("3: Show me the creators who made this prgoram");
-        selectHelp = keyboard.nextInt();
-              
-        if(selectHelp == 1){
-        
-            int length = fishArray.length;
-            count = 0;
-            
-            System.out.println("\nFish list: ");
-            
-            while(count != length){
-                System.out.println(count+1 + ":" + fishArray[count]);
-                count++;
+
+
+      JPanel panel1 = new JPanel();
+      panel1.setLayout(new GridLayout(2,1));
+      panel1.add(beginner);
+      panel1.add(beginnerPrice);
+      JPanel panel2 = new JPanel();
+      panel2.setLayout(new GridLayout(2,1));
+      panel2.add(intermediate);
+      panel2.add(intermediatePrice);
+      JPanel panel3 = new JPanel();
+      panel3.setLayout(new GridLayout(2,1));
+      panel3.add(advanced);
+      panel3.add(advancedPrice);
+
+      shop.add(panel1);
+      shop.add(panel2);
+      shop.add(panel3);
+
+      shop.setVisible(true);
+
+      beginner.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            if(user.getMoney()>100000){
+               user.setMoney(-100000);
+               user.setRodLevel(1);
+               new Print("Shopping","Success to buy beginner fishing rod");
             }
-        }else if (selectHelp == 2){ //nod 를 array 만들어 놓지 않는 한 이렇게,,
-              String name = null;
-              Rod rod2 = new Rod();
-            
-              System.out.println("\nFishing nod list: ");
-            
-              while(count < 3){
-                  rod2.setName(count+1);
-                  name = rod2.getName();
-                  System.out.println(name);
-                  count ++;
-              }
-            
-        }else if (selectHelp == 3){
-            System.out.println("\nThis program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee for Java Team Project in 2019 spring semester\n");
-            System.out.println("This game is also supported by Prof. Ahn in Handong Global University\n");
-            System.out.println("Any inquries, just Contact us: Handong@hanodong.edu\n");
-            
-        }else{
-            System.out.println("\nYou entered wrong option");
-        }
-              
-        break;
-              
-
-      case 5: //게임종료
-      	System.out.println("Game End");
-      	savefile(user);
-      	keyboard.close();
-      	System.exit(0);
-      	break;
-      }//switch문 닫는 괄호
-      if(user.getMoney() >= 3000000) gameEND = true;
-    }//while문 닫는 괄호
-
-
-    System.out.println("\n\n The legend of Fishermen " + userName + "fianlly come back to School\n");
-    System.out.println("And his story has been told for a long time \n\n\n");
-    System.out.println("\tT  H  E\n");
-    System.out.println("\tE  N  D");
-
-
-  }//main함수 닫는 괄호
-
-  public void fishing(){ //낚시하기
-
-  }//fishing 함수 닫는 괄호
-
-  public void shop(){//상점
-
-  }//shop 함수 닫는 괄호
-
-  public static void savefile(User user){//user정보 저장
-	String fileName= "user.txt";
-    PrintWriter outputStream= null;
-	try{
+            else
+               new Print("Shopping","Not enough balance!");
+         }
+      });
+      intermediate.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            if(user.getMoney()>500000){
+               user.setMoney(-500000);
+               user.setRodLevel(2);
+               new Print("Shopping","Success to buy intermediate fishing rod");
+            }
+            else
+               new Print("Shopping","Not enough balance!");
+         }
+      });
+      advanced.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            if(user.getMoney()>1000000){
+               user.setMoney(-1000000);
+               user.setRodLevel(3);
+               new Print("Shopping","Success to buy advanced fishing rod");
+            }
+            else
+               new Print("Shopping","Not enough balance!");
+         }
+      });
+   }
+}
+class SaveFile{
+   public SaveFile(User user){
+      new Print("saveFile","Saved:)");
+      String fileName= "user.txt";
+      PrintWriter outputStream= null;
+      try{
       outputStream= new PrintWriter(fileName);
-    }
-    catch(FileNotFoundException e){
+      }
+      catch(FileNotFoundException f){
       System.out.println("Error opening the file"+ fileName);
       System.exit(0);
+      }
+      Scanner keyboard= new Scanner(System.in);
+      outputStream.println(user.getMoney());
+      outputStream.println(user.getRodLevel());
+      outputStream.close();
+   }
+}//SaveFile
+class Print{
+    public Print(String frameName, String message){
+      JFrame frame = new JFrame(frameName);
+      frame.setLayout(new BorderLayout());
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
+
+      JLabel label = new JLabel();
+      label.setText("                "+message);
+      frame.add(label,BorderLayout.CENTER);
+      frame.setVisible(true);
+   }//Print()
+}//Print
+class Help{
+   public Help(String selected,User user){
+      Dimension dim;
+      JLabel label = new JLabel();
+      JFrame frame = new JFrame("fishing game");
+      JButton button = new JButton("confirm");
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
+
+      int selectHelp = Integer.parseInt(selected);
+      if(selectHelp == 1){
+         dim = new Dimension(200,400);
+            label.setText("<html>| Salmon<br/>| Flatfish<br/>| Squid<br/>| Octopus<br/>| Minnow<br/>| Shrimp<br/>| Carp<br/>| Tuna<br/>| Mackerel<br/>| Saury</html>");
+      }else if (selectHelp == 2){
+         dim = new Dimension(200,200);
+         label.setText("<html>| Fishing nod lists:<br/>| beginner<br/>| intermediate<br/>| advanced<br/></html>");
+        }else if (selectHelp == 3){
+         dim = new Dimension(700,200);
+         label.setText("<html>| This program was made by Kiwoong Kim, Narin Kang, Geonha Baek, Goeun Lee, and Hyerim Lee<br/>| for Java Team Project in 2019 spring semester<br/>| This game is also supported by Prof. Ahn in Handong Global University<br/>| Any inquries, just Contact us: Handong@hanodong.edu</html>");
+      }else if (selectHelp == 4){
+         dim = new Dimension(200,200);
+         label.setText("<html>Your name: "+user.getName()+"<br/>Your money: "+user.getMoney()+"<br/>Your rodLevel: "+user.getRodLevel()+"</html>");
+      }else{
+         dim = new Dimension(200,200);
+            new Print("warining","\nYou entered wrong option");
+      }
+      frame.setLayout(new BorderLayout());
+      frame.add(label,BorderLayout.CENTER);
+      frame.add(button,BorderLayout.SOUTH);
+      frame.setVisible(true);
+      button.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            frame.dispose();
+         }
+      });
+
+   }
+}
+class Ask{
+   Ask(User user){
+      JFrame frame = new JFrame("askmenu");
+      JButton button = new JButton("ENTER");
+      JLabel label = new JLabel();
+      JTextField text = new JTextField();
+
+      label.setText("<html>| Creator: How can I help you?<br/>| 1: Show me the fish list<br/>| 2: Show me the fishing nod list<br/>| 3: Show me the creators who made this prgoram<br/>| 4:Your current information</html>");
+
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
+
+      frame.setLayout(new BorderLayout());
+      frame.add(label,BorderLayout.CENTER);
+      frame.add(text,BorderLayout.SOUTH);
+      frame.add(button,BorderLayout.EAST);
+
+      frame.pack();
+      frame.setVisible(true);
+
+      button.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            new Help(text.getText(),user);
+            frame.dispose();
+         }
+      });//button ActionListener
+   }
+}
+class Intro{
+    public Intro(String[] fishArray){
+      JFrame frame = new JFrame("Move Label");
+      JTextField name = new JTextField();
+      JButton enter = new JButton("ENTER");
+      MyPanel panel=new MyPanel();
+
+      enter.setBackground(new Color(103,153,255)); 
+		enter.setOpaque(true); enter.setBorderPainted(false);
+
+      frame.setTitle("Enter your name");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+      frame.add(panel,BorderLayout.CENTER);
+      frame.add(name,BorderLayout.SOUTH);
+      frame.add(enter,BorderLayout.EAST);
+
+      enter.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+            String userName = name.getText();
+            Main.setUserName(userName);
+            User user = new User(userName, Main.money, Main.rodLevel);
+            //new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
+            new ButtonMenu(user,fishArray);
+            frame.dispose();
+         }
+      });
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
+      frame.setVisible(true);
     }
-    Scanner keyboard= new Scanner(System.in);
-    outputStream.println("Name : "+user.getName() +"  Current Money : " +user.getMoney() + "  Level : "+user.getRodLevel());
-    outputStream.close();
 
-    System.out.println("File's saved");
-
-  }//savefile 함수 닫는 괄호
-
-}//class Main 닫는 괄호
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-//<User가 여러명일때>
-
-//Scanner inputStream= null;
-try{
-inputStream= newScanner(newFile(fileName));
+    class MyPanel extends JPanel{
+      ImageIcon icon=new ImageIcon("fishing.jpg");
+      Image img=icon.getImage();
+      public void paintComponent(Graphics g){
+         super.paintComponent(g);
+         g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+         g.setFont(new Font("myFont",Font.BOLD ,50));
+         g.setColor(Color.BLACK);
+         g.drawString("Fishing Game", 200, 70);
+         g.setFont(new Font("secondFont",Font.PLAIN,20));
+         g.setColor(Color.WHITE);
+         g.drawString("Enter your name to start the game",10,430);
+       }
+   }
 }
-catch(FileNotFoundExceptione){
-System.out.println("Error opening the file "+ fileName);
-System.exit(0);
+class FishingIntro{
+
+  private String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
+  private int randomInt =0;
+  private double fishWeight =0.0;
+  private int fishPrice =0;
+  private Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
+  //private Fishing fishing = new Fishing();
+    public FishingIntro(User user){
+      JFrame frame = new JFrame("Fishing");
+      JTextField name = new JTextField();
+      JButton enter = new JButton("ENTER");
+
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
+      frame.setLayout(null);
+
+      MyPanel panel = new MyPanel();
+      frame.add(panel); //처음 게임시작 창 띄우기
+      frame.setVisible(true);
+      panel.setBounds(0,0,800,500);
+      MyPanel2 panel2 = new MyPanel2();
+      panel2.setBounds(350,300,100,100);
+      //frame.add(panel2);
+      frame.setVisible(true);
+    }
+    class MyPanel extends JPanel{
+      ImageIcon icon=new ImageIcon("sea.jpg");
+      Image img=icon.getImage();
+
+      public void paintComponent(Graphics g){
+         super.paintComponent(g);
+         g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), null);
+         //g.drawImage(img,0,0,350,450, null);
+         g.setFont(new Font("myFont",Font.BOLD ,50));
+         g.setColor(Color.BLACK);
+         g.drawString("Let's start", 200, 70);
+         g.setFont(new Font("secondFont",Font.PLAIN,20));
+         g.setColor(Color.WHITE);
+         g.drawString("Enter the key",10,100);
+      }
+   }
+
+   class MyPanel2 extends JPanel{
+     ImageIcon icon=new ImageIcon("fishicon2.png");
+     Image img=icon.getImage();
+
+     public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.drawImage(img,0,0, 100,100, null);
+     }
+  }
+
 }
-while(inputStream.hasNextLine()){
-String line= inputStream.nextLine();
-if(line==userName){
-	System.out.println("이전의 기록된 사용자가 있습니다. 이어서 하시겠습니까?(1.예 2.아니오)");
-	int n=keyboard.nextInt();
-	if(n==1){
-이름 돈 낚싯대 레벨
+
+class Fish{
+	private String fishName;
+	private int fishPrice;
+	private double fishWeight;
+
+	Fish(String fishName, double fishWeight, int fishPrice){
+      this.fishName = fishName;
+      this.fishWeight = fishWeight;
+      this.fishPrice = fishPrice;
+   }
+   public int getfishPrice(){
+      return fishPrice;
+   }
 }
-}//if
-}//while문
-inputStream.close();
 
-while()
-String name=sc.next();
-if(userName==name)//그대로이어서
-없으면 새로 만들기
+class Fishing{
+    JFrame fishing = new JFrame();
+    MyLabel bar;//바의 최대 크기를 100으로 지정
+    JLabel letter = new JLabel("        click");
+    JButton button = new JButton("Return to home");
+    char key;
+    
+    Fishing (User user, String [] fishArray, MyLabel bar, char key, int rnd){
+        
+        this.bar = bar;
+        fishing.setTitle("아무키나 빨리 눌러 바 채우기");
+        //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
+        fishing.setLayout(new GridLayout(3,1));
+        
+        JLabel text = new JLabel("<html> Press "+key+" to wind your fishing rod</html>");
+        fishing.add(text);
+        
+        bar.setBackground(Color.ORANGE);
+        bar.setOpaque(true);
+        bar.setLocation(20, 50);
+        bar.setSize(300,20);
+        fishing.add(bar);
+        fishing.add(button);
+        button.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                fishing.dispose();
+            }
+        });
+        
+        //fishing.pack();
+        fishing.setVisible(true);
+        fishing.addKeyListener(new KeyListener(){
+            @Override
+            public void keyTyped(KeyEvent ke) {
+            }
+            @Override
+            public void keyPressed(KeyEvent ke) {
+                if(ke.getKeyChar() == key)
+                    bar.fill(user, fishArray, rnd);
+            }
+            @Override
+            public void keyReleased(KeyEvent ke) {
+            }
+        });
+        fishing.setLocationRelativeTo(null);
+        fishing.setSize(350,200);
+        fishing.setVisible(true);
+        fishing.requestFocus();//키 처리권 부여
+        ConsumerThread th = new ConsumerThread(bar);//스레드 생성
+        th.start();//스레드 시작
+    }
+}
 
-< user.txt >
-user
-0
-0
+class MyLabel extends JLabel{
+    int barSize=0;//바의 크기
+    int maxBarSize; //바의 맥스 사이즈
+    
+    JFrame fishingFrame;
+    MyLabel(int maxBarSize){
+        this.maxBarSize=maxBarSize;
+    }
+    public void setFrame(JFrame frame){
+        this.fishingFrame = frame;
+    }
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.setColor(Color.darkGray);
+        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
+        if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
+        g.fillRect(0,0,width,this.getHeight());
+    }
+    synchronized void fill(User user, String[] fishArray, int rnd){
+        if(barSize==maxBarSize){
+            try{
+                
+                fishingFrame.dispose();
+                user.setMoney (10000);
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+        barSize++;
+        this.repaint();//바 다시그리기
+        this.notify();//기다리는 ConsumerThread 스레드 깨우기
+    }
+    synchronized void consume(){
+        if(barSize==0){
+            try{
+                this.wait();//바의 크기가 0이면 바의 크기가 0보다 커질때까지 대기
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+        barSize--;
+        this.repaint();//바 다시 그리기
+        this.notify();//기다리는 이벤트 스레드 깨우기
+    }
+}
 
-*/
+class ConsumerThread extends Thread{
+    MyLabel con;
+    ConsumerThread(MyLabel con){
+        this.con=con;
+    }
+    public void run(){
+        while(true){
+            try{
+                sleep(500);
+                con.consume();//0.2초마다 바를 1씩 줄인다.
+            }
+            catch(Exception e){
+                return;
+            }
+        }
+    }
+}
