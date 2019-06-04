@@ -1,24 +1,8 @@
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Random;
-import java.io.File;
-import java.util.Scanner;
+import java.io.*;
 import java.awt.*;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.ImageIcon;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;//
-import java.io.*;
+import java.util.*;
 
 class Main4{
    public static int money;
@@ -67,20 +51,28 @@ class ButtonMenu{
    {
       JFrame menu = new JFrame("Fishing game");
       menu.setLayout(new GridLayout(5,1));
-      menu.add(b1);
-      menu.add(b2);
-      menu.add(b3);
-      menu.add(b4);
-      menu.add(b5);
+      b1.setBackground(new Color(212,244,250));
+		menu.add(b1);
+		b2.setBackground(new Color(228,247,186));
+		menu.add(b2);
+		b3.setBackground(new Color(250,244,192));
+		menu.add(b3);
+		b4.setBackground(new Color(255,217,250));
+		menu.add(b4);
+		b5.setBackground(new Color(232,217,255));
+		menu.add(b5);
+		b1.setOpaque(true); b1.setBorderPainted(false);
+		b2.setOpaque(true); b2.setBorderPainted(false);
+		b3.setOpaque(true); b3.setBorderPainted(false);
+		b4.setOpaque(true); b4.setBorderPainted(false);
+		b5.setOpaque(true); b5.setBorderPainted(false);
 
       menu.setLocation(100,100);
-      menu.setSize(300, 400);
+      menu.setSize(800,500);
       menu.setVisible(true);
       menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       b1.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            MyLabel bar = new MyLabel(20);
-            new FishingIntro(user);
          }
       });//b1 ActionListener
       b2.addActionListener(new ActionListener(){
@@ -109,14 +101,25 @@ class ButtonMenu{
 
 class Shopping{
    JButton beginner = new JButton("beginner");
-   JLabel beginnerPrice = new JLabel("         100000");
+   JLabel beginnerPrice = new JLabel("             100000");
    JButton intermediate = new JButton("intermediate");
-   JLabel intermediatePrice = new JLabel("         500000");
+   JLabel intermediatePrice = new JLabel("             500000");
    JButton advanced = new JButton("advanced");
-   JLabel advancedPrice = new JLabel("         1000000");
+   JLabel advancedPrice = new JLabel("             1000000");
    public Shopping(User user){
       JFrame shop = new JFrame("SHOP");
+      shop.setLocation(100,100);
+      shop.setSize(800,500);
       shop.setLayout(new GridLayout(1,3));
+
+      beginner.setBackground(new Color(92,209,229)); 
+      beginner.setOpaque(true); beginner.setBorderPainted(false);
+      intermediate.setBackground(new Color(103,153,255)); 
+		intermediate.setOpaque(true); intermediate.setBorderPainted(false);
+      advanced.setBackground(new Color(107,102,255)); 
+		advanced.setOpaque(true); advanced.setBorderPainted(false);
+
+
 
       JPanel panel1 = new JPanel();
       panel1.setLayout(new GridLayout(2,1));
@@ -135,8 +138,7 @@ class Shopping{
       shop.add(panel2);
       shop.add(panel3);
 
-      shop.pack();
-        shop.setVisible(true);
+      shop.setVisible(true);
 
       beginner.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
@@ -193,17 +195,15 @@ class SaveFile{
 }//SaveFile
 class Print{
     public Print(String frameName, String message){
-        Dimension dim = new Dimension(300,100);
       JFrame frame = new JFrame(frameName);
       frame.setLayout(new BorderLayout());
-        frame.setLocation(300,400);
-        frame.setPreferredSize(dim);
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
 
-        JLabel label = new JLabel();
-        label.setText("                "+message);
-        frame.add(label,BorderLayout.CENTER);
-        frame.pack();
-        frame.setVisible(true);
+      JLabel label = new JLabel();
+      label.setText("                "+message);
+      frame.add(label,BorderLayout.CENTER);
+      frame.setVisible(true);
    }//Print()
 }//Print
 class Help{
@@ -212,7 +212,8 @@ class Help{
       JLabel label = new JLabel();
       JFrame frame = new JFrame("fishing game");
       JButton button = new JButton("confirm");
-      frame.setLocation(300,400);
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
 
       int selectHelp = Integer.parseInt(selected);
       if(selectHelp == 1){
@@ -231,11 +232,9 @@ class Help{
          dim = new Dimension(200,200);
             new Print("warining","\nYou entered wrong option");
       }
-      frame.setPreferredSize(dim);
       frame.setLayout(new BorderLayout());
       frame.add(label,BorderLayout.CENTER);
       frame.add(button,BorderLayout.SOUTH);
-      frame.pack();
       frame.setVisible(true);
       button.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
@@ -247,7 +246,6 @@ class Help{
 }
 class Ask{
    Ask(User user){
-      Dimension dim = new Dimension(600,200);
       JFrame frame = new JFrame("askmenu");
       JButton button = new JButton("ENTER");
       JLabel label = new JLabel();
@@ -255,8 +253,8 @@ class Ask{
 
       label.setText("<html>| Creator: How can I help you?<br/>| 1: Show me the fish list<br/>| 2: Show me the fishing nod list<br/>| 3: Show me the creators who made this prgoram<br/>| 4:Your current information</html>");
 
-      frame.setLocation(300,400);
-      frame.setPreferredSize(dim);
+      frame.setLocation(100,100);
+      frame.setSize(800,500);
 
       frame.setLayout(new BorderLayout());
       frame.add(label,BorderLayout.CENTER);
@@ -281,8 +279,11 @@ class Intro{
       JButton enter = new JButton("ENTER");
       MyPanel panel=new MyPanel();
 
-        frame.setTitle("Enter your name");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      enter.setBackground(new Color(103,153,255)); 
+		enter.setOpaque(true); enter.setBorderPainted(false);
+
+      frame.setTitle("Enter your name");
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
       frame.add(panel,BorderLayout.CENTER);
       frame.add(name,BorderLayout.SOUTH);
@@ -298,10 +299,8 @@ class Intro{
             frame.dispose();
          }
       });
-      frame.pack();
-      frame.setLocationRelativeTo(null);
       frame.setLocation(100,100);
-        frame.setSize(800,500);
+      frame.setSize(800,500);
       frame.setVisible(true);
     }
 
@@ -320,8 +319,6 @@ class Intro{
        }
    }
 }
-
-
 class FishingIntro{
 
   private String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
@@ -335,6 +332,7 @@ class FishingIntro{
       JTextField name = new JTextField();
       JButton enter = new JButton("ENTER");
 
+      frame.setLocation(100,100);
       frame.setSize(800,500);
       frame.setLayout(null);
 
@@ -346,55 +344,7 @@ class FishingIntro{
       panel2.setBounds(350,300,100,100);
       //frame.add(panel2);
       frame.setVisible(true);
-
-
-
-      /*frame.add(panel2);
-      frame.add(panel);
-      frame.setVisible(true);*/
-
-      /**/
-
-
-      //frame.add(panel2);
-      //frame.add(panel);
-
-      //frame.setVisible(true);
-
-      /*try
-        {
-            if(!fishing.getInput()){//낚시 실패하면
-                System.out.println("The fish you just missed: " + fishArray[randomInt]);
-                System.out.printf("Weight: %.2fkg\n", fishWeight);
-                System.out.println("Price: " + fishPrice + " Won");
-
-            }else{ //낚시 성공시
-                System.out.println("The fish you just caught: " + fishArray[randomInt]);
-                System.out.printf("Wegiht: %.2fkg\n", fishWeight);
-                System.out.println("Price: " + fishPrice + " Won");
-                user.setMoney(fishPrice);
-            }
-
-        }
-            catch(Exception e)
-        {
-            System.out.println(e);
-        }
-            System.out.println( "The fishing is over!\n" );*/
-
-
-      //----랜덤일때
     }
-    /*public void fishwait(){
-      try {
-        Thread.sleep(5000);
-      }
-      catch(InterruptedException e){
-        System.out.println(e.getMessage()); //sleep 메소드가 발생하는 InterruptedException
-      }
-    }*/
-
-
     class MyPanel extends JPanel{
       ImageIcon icon=new ImageIcon("sea.jpg");
       Image img=icon.getImage();
@@ -424,16 +374,6 @@ class FishingIntro{
 
 }
 
-/*class waitfish{
-
-  try {
-    Thread.sleep(5000);
-  }
-  catch(InterruptedException e){
-    System.out.println(e.getMessage()); //sleep 메소드가 발생하는 InterruptedException
-  }
-}*/
-
 class Fish{
 	private String fishName;
 	private int fishPrice;
@@ -448,61 +388,3 @@ class Fish{
       return fishPrice;
    }
 }
-
-/*class FishingSetting{
-  /*private String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
-  private int randomInt =0;
-  private double fishWeight =0.0;
-  private int fishPrice =0;
-  private Fish fish = new Fish(fishArray[randomInt], fishWeight, fishPrice);
-  private Fishing fishing = new Fishing();
-
-  FishingSetting(User user){
-    randomInt=random.nextInt(fishArray.length -1);
-    fishWeight=10 * random.nextDouble() + 1;
-    fishPrice=(int)(fishWeight * 10000 * user.getRodLevel());
-  }*/
-  /*try
-    {
-        if(!fishing.getInput()){//낚시 실패하면
-            System.out.println("The fish you just missed: " + fishArray[randomInt]);
-            System.out.printf("Weight: %.2fkg\n", fishWeight);
-            System.out.println("Price: " + fishPrice + " Won");
-
-        }else{ //낚시 성공시
-            System.out.println("The fish you just caught: " + fishArray[randomInt]);
-            System.out.printf("Wegiht: %.2fkg\n", fishWeight);
-            System.out.println("Price: " + fishPrice + " Won");
-            user.setMoney(fishPrice);
-        }
-
-    }
-        catch(Exception e)
-    {
-        System.out.println(e);
-    }
-        System.out.println( "The fishing is over!\n" );
-}*//*
-
-public class Fishing{
-    Random ran = new Random(); // 유저에게 입력받을 아스키코드를 랜덤으로 발생시키 위한 rnd 객체 선언을 위함.
-    private int rnd2 = ran.nextInt(10); // ...의 갯수를 랜덤하게 하기 위한
-    Timer timer = new Timer(); // 잡는 시간을 제한하기 위해서, 타이머 객체선언.
-
-
-    TimerTask task = new TimerTask(){
-        public void run(){
-
-            } //if
-        }// void run
-    }; //TimerTask
-
-
-
-    public void getInput() throws Exception{ // 에러체크와 동시에 boolean getInput() 메소드 선언
-
-        timer.schedule(task, rnd2*1000);
-
-
-    } // getInput()
-} //Fishing*/
