@@ -111,23 +111,27 @@ class ButtonMenu{
 
 class Shopping{
    JButton beginner = new JButton("beginner");
-   JLabel beginnerPrice = new JLabel("             100000");
+   JLabel beginnerPrice = new JLabel("                 100000");
    JButton intermediate = new JButton("intermediate");
-   JLabel intermediatePrice = new JLabel("             500000");
+   JLabel intermediatePrice = new JLabel("                 500000");
    JButton advanced = new JButton("advanced");
-   JLabel advancedPrice = new JLabel("             1000000");
+   JLabel advancedPrice = new JLabel("                 1000000");
+   JButton tuition = new JButton("Tuition");
+   JLabel tuitionPrice = new JLabel("                 3000000");
    public Shopping(User user){
       JFrame shop = new JFrame("SHOP");
       shop.setLocation(100,100);
       shop.setSize(800,500);
-      shop.setLayout(new GridLayout(1,3));
+      shop.setLayout(new GridLayout(1,4));
 
       beginner.setBackground(new Color(92,209,229)); 
       beginner.setOpaque(true); beginner.setBorderPainted(false);
       intermediate.setBackground(new Color(103,153,255)); 
-		intermediate.setOpaque(true); intermediate.setBorderPainted(false);
+      intermediate.setOpaque(true); intermediate.setBorderPainted(false);
       advanced.setBackground(new Color(107,102,255)); 
-		advanced.setOpaque(true); advanced.setBorderPainted(false);
+      advanced.setOpaque(true); advanced.setBorderPainted(false);
+      tuition.setBackground(new Color(200,200,255));
+      tuition.setOpaque(true); tuition.setBorderPainted(false);
 
 
 
@@ -143,10 +147,15 @@ class Shopping{
       panel3.setLayout(new GridLayout(2,1));
       panel3.add(advanced);
       panel3.add(advancedPrice);
+      JPanel panel4 = new JPanel();
+      panel4.setLayout(new GridLayout(2,1));
+      panel4.add(tuition);
+      panel4.add(tuitionPrice);
 
       shop.add(panel1);
       shop.add(panel2);
       shop.add(panel3);
+      shop.add(panel4);
 
       shop.setVisible(true);
 
@@ -183,6 +192,17 @@ class Shopping{
                new Print("Shopping","Not enough balance!");
          }
       });
+       tuition.addActionListener(new ActionListener(){
+           public void actionPerformed(ActionEvent e){
+               if(user.getMoney()>3000000){
+                   user.setMoney(-3000000);
+                   
+                   new Print("Shopping","Success to tuition for Uni");
+               }
+               else
+                   new Print("Shopping","Not enough balance!");
+           }
+       });
    }
 }
 class SaveFile{
