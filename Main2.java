@@ -15,6 +15,10 @@ import javax.swing.ImageIcon;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;//
+import java.io.*;
 
 class Main2{
 	public static int money;
