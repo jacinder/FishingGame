@@ -6,6 +6,7 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import java.util.Timer;
 import java.util.TimerTask;
+import javax.sound.sampled.*;
 
 class Main{
    public static int money;
@@ -382,7 +383,7 @@ class FishingIntro{
       frame.setLayout(null);
 
       MyPanel panel = new MyPanel();
-      frame.add(panel); //처음 게임시작 창 띄우기
+      frame.add(panel);
       frame.setVisible(true);
       panel.setBounds(0,0,800,500);
       MyPanel2 panel2 = new MyPanel2();
@@ -436,7 +437,7 @@ class Fish{
 
 class Fishing{
     JFrame fishing = new JFrame();
-    MyLabel bar;//바의 최대 크기를 100으로 지정
+    MyLabel bar;
     JLabel letter = new JLabel("        click");
     JButton button = new JButton("Return to home");
     char key;
@@ -444,7 +445,7 @@ class Fishing{
     Fishing (User user, String [] fishArray, MyLabel bar, char key, int rnd){
 
         this.bar = bar;
-        fishing.setTitle("아무키나 빨리 눌러 바 채우기");
+        fishing.setTitle("bar");
         //this.setDefaultCloseOperation(TabAndThreadEx.EXIT_ON_CLOSE);
         fishing.setLayout(new GridLayout(3,1));
 
@@ -453,7 +454,7 @@ class Fishing{
         Timer timer = new Timer();
         TimerTask task = new TimerTask(){
             public void run(){
-                //실패메세지 남기기
+                //fail message
                 fishing.dispose();
                 JFrame Message = new JFrame();
                 Message.pack();
@@ -506,15 +507,15 @@ class Fishing{
         fishing.setLocation(100,100);
         fishing.setSize(800,500);
         fishing.setVisible(true);
-        fishing.requestFocus();//키 처리권 부여
-        ConsumerThread th = new ConsumerThread(bar);//스레드 생성
-        th.start();//스레드 시작
+        fishing.requestFocus();
+        ConsumerThread th = new ConsumerThread(bar);
+        th.start();
     }
 }
 
 class MyLabel extends JLabel{
-    int barSize=0;//바의 크기
-    int maxBarSize; //바의 맥스 사이즈
+    int barSize=0;
+    int maxBarSize;
     JFrame fishingFrame;
     JButton button;
     JFrame Message = new JFrame();
@@ -527,8 +528,8 @@ class MyLabel extends JLabel{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.setColor(Color.darkGray);
-        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
-        if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
+        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize);
+        if(width==0) return;
         g.fillRect(0,0,width,this.getHeight());
     }
     synchronized void fill(User user, String[] fishArray, int rnd, Timer timer){
@@ -558,21 +559,21 @@ class MyLabel extends JLabel{
             });
           }
         barSize++;
-        this.repaint();//바 다시그리기
-        this.notify();//기다리는 ConsumerThread 스레드 깨우기
+        this.repaint();
+        this.notify();
     }
     synchronized void consume(){
         if(barSize==0){
             try{
-                this.wait();//바의 크기가 0이면 바의 크기가 0보다 커질때까지 대기
+                this.wait();
             }
             catch(Exception e){
                 return;
             }
         }
         barSize--;
-        this.repaint();//바 다시 그리기
-        this.notify();//기다리는 이벤트 스레드 깨우기
+        this.repaint();
+        this.notify();
     }
 }
 
@@ -585,7 +586,7 @@ class ConsumerThread extends Thread{
         while(true){
             try{
                 sleep(500);
-                con.consume();//0.2초마다 바를 1씩 줄인다.
+                con.consume();
             }
             catch(Exception e){
                 return;
