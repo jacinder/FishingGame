@@ -509,11 +509,13 @@ class Fishing{
     }
 }
 
+
 class MyLabel extends JLabel{
-    int barSize=0;
-    int maxBarSize;
+    int barSize=0;//바의 크기
+    int maxBarSize; //바의 맥스 사이즈
     JFrame fishingFrame;
     JButton button;
+    MyPanel panel;
     JFrame Message = new JFrame();
     MyLabel(int maxBarSize){
         this.maxBarSize=maxBarSize;
@@ -523,12 +525,15 @@ class MyLabel extends JLabel{
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(new Color(0,216,255));
-        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize);
-        if(width==0) return;
+        g.setColor(Color.darkGray);
+        int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
+        if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
         g.fillRect(0,0,width,this.getHeight());
     }
     synchronized void fill(User user, String[] fishArray, int rnd, Timer timer){
+      String fishName=fishArray[rnd%10];
+      double fishWeight = rnd%10;
+      String fishImage=fishName+".jpg";
 
         if(barSize==maxBarSize){
           fishingFrame.dispose();
@@ -537,15 +542,15 @@ class MyLabel extends JLabel{
                 timer.cancel();
                 user.setMoney (rnd*10000);
                 Message.pack();
+
+                button = new JButton("Return to home");
+                panel = new MyPanel(fishName,fishImage,fishWeight);
+
+                Message.add(button,BorderLayout.SOUTH);
+                Message.add(panel,BorderLayout.CENTER);
+
                 Message.setLocation(100,100);
                 Message.setSize(800,500);
-                JLabel letter = new JLabel("Success:D \n The fish you just caught: " + fishArray[rnd%10]);
-                letter.setFont(letter.getFont().deriveFont(25.0f));
-                letter.setVerticalAlignment(SwingConstants.CENTER);
-                letter.setHorizontalAlignment(SwingConstants.CENTER);
-                button = new JButton("Return to home");
-                Message.add(letter,BorderLayout.CENTER);
-                Message.add(button,BorderLayout.SOUTH);
                 Message.setVisible(true);
               }
             catch(Exception e){
@@ -558,22 +563,52 @@ class MyLabel extends JLabel{
             });
           }
         barSize++;
-        this.repaint();
-        this.notify();
+        this.repaint();//바 다시그리기
+        this.notify();//기다리는 ConsumerThread 스레드 깨우기
     }
+
+
     synchronized void consume(){
         if(barSize==0){
             try{
-                this.wait();
+                this.wait();//바의 크기가 0이면 바의 크기가 0보다 커질때까지 대기
             }
             catch(Exception e){
                 return;
             }
         }
         barSize--;
-        this.repaint();
-        this.notify();
+        this.repaint();//바 다시 그리기
+        this.notify();//기다리는 이벤트 스레드 깨우기
     }
+
+    class MyPanel extends JPanel{
+      String fishName,fishImage;
+      double fishWeight;
+      ImageIcon icon;
+      Image img;
+
+      MyPanel(String fishName,String fishImage, double fishWeight){
+        this.fishName=fishName;
+        this.fishImage=fishImage;
+        this.fishWeight=fishWeight;
+        icon=new ImageIcon(fishImage);
+        img=icon.getImage();
+      }
+
+      public void paintComponent(Graphics g){
+         super.paintComponent(g);
+         g.drawImage(img,50,50,this.getWidth()-100,this.getHeight()-100, null);
+         g.setFont(new Font("myFont",Font.BOLD ,40));
+         g.setColor(Color.RED);
+         g.drawString("Success!!!", 250, 40);
+         g.setFont(new Font("secondFont",Font.PLAIN,25));
+         g.setColor(Color.BLACK);
+         g.drawString( "The fish you just caught: "+fishName,10,430);
+         g.drawString("       Weight: "+fishWeight+" kg",500,430);
+      }
+   }
+
 }
 
 class ConsumerThread extends Thread{
