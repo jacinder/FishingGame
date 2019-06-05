@@ -446,7 +446,7 @@ class Fishing{
         TimerTask task = new TimerTask(){
             public void run(){
                 s.stopBgm();
-                s.playSound(new File("H.WAV"), 1.0f, false);
+                s.playSound(new File("fail.wav"), 1.0f, false);
                 //fail message
                 fishing.dispose();
                 Message.pack();
