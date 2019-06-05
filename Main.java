@@ -525,7 +525,7 @@ class MyLabel extends JLabel{
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.darkGray);
+        g.setColor(new Color(0,216,255));
         int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize); //크기
         if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
         g.fillRect(0,0,width,this.getHeight());
@@ -600,8 +600,8 @@ class MyLabel extends JLabel{
          super.paintComponent(g);
          g.drawImage(img,50,50,this.getWidth()-100,this.getHeight()-100, null);
          g.setFont(new Font("myFont",Font.BOLD ,40));
-         g.setColor(Color.RED);
-         g.drawString("Success!!!", 250, 40);
+         g.setColor(new Color(95,0,255));
+         g.drawString("       Success~!", 250, 40);
          g.setFont(new Font("secondFont",Font.PLAIN,25));
          g.setColor(Color.BLACK);
          g.drawString( "The fish you just caught: "+fishName,10,430);
