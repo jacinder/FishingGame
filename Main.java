@@ -81,7 +81,7 @@ class ButtonMenu{
       b1.addActionListener(new ActionListener(){
           public void actionPerformed(ActionEvent e){
               Random ran = new Random();
-              int rnd = ran.nextInt(94)+33;
+              int rnd = ran.nextInt(92)+34;
               char key = (char)(rnd);
               MyLabel bar = new MyLabel(20);
               Fishing fishingThread = new Fishing(user,fishArray,bar,key,rnd,s);
@@ -510,7 +510,7 @@ class Fishing{
             }
         };
 
-        timer.schedule(task, 10000);
+        timer.schedule(task, 4000);
 
 
         bar.setBackground(new Color(212,244,250));
@@ -534,7 +534,7 @@ class Fishing{
             @Override
             public void keyPressed(KeyEvent ke) {
                 if(ke.getKeyChar() == key)
-                    bar.fill(user, fishArray, rnd, timer, s);
+                    bar.fill(user, fishArray, timer, s);
             }
             @Override
             public void keyReleased(KeyEvent ke) {
@@ -571,9 +571,12 @@ class MyLabel extends JLabel{
         if(width==0) return;
         g.fillRect(0,0,width,this.getHeight());
     }
-    synchronized void fill(User user, String[] fishArray, int rnd, Timer timer, Sound s){
-      String fishName=fishArray[rnd%10];
-      double fishWeight = rnd%10;
+    synchronized void fill(User user, String[] fishArray, Timer timer, Sound s){
+      Random random = new Random();
+      int rnd1 = random.nextInt(10);
+      int rnd2 = random.nextInt(10)+1;
+      String fishName=fishArray[rnd1];
+      double fishWeight = (rnd2+1)%10.0*(user.getRodLevel()*user.getRodLevel()+1);
       int fishPrice=(int)fishWeight*10000;
       String fishImage=fishName+".jpg";
 
@@ -649,7 +652,7 @@ class MyLabel extends JLabel{
          g.setFont(new Font("myFont",Font.BOLD ,40));
          g.setColor(new Color(95,0,255));
          g.drawString("       Success~!", 250, 40);
-         g.setFont(new Font("secondFont",Font.PLAIN,25));
+         g.setFont(new Font("secondFont",Font.PLAIN,21));
          g.setColor(Color.BLACK);
          g.drawString( "The fish you just caught: "+fishName+"  Weight: "+fishWeight+" kg  Price: "+fishPrice+" Won",10,430);
       }
@@ -678,30 +681,15 @@ class ConsumerThread extends Thread{
 class Ending{
     public Ending(Sound s){
         JFrame frame = new JFrame("Move Label");
-        //JTextField name = new JTextField();
-        //JButton enter = new JButton("ENTER");
+
         MyPanel panel=new MyPanel(s);
 
-        //enter.setBackground(new Color(103,153,255));
-        //enter.setOpaque(true); enter.setBorderPainted(false);
 
         frame.setTitle("Ending");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.add(panel,BorderLayout.CENTER);
-        // frame.add(name,BorderLayout.SOUTH);
-        //  frame.add(enter,BorderLayout.EAST);
 
-        /*enter.addActionListener(new ActionListener(){
-         public void actionPerformed(ActionEvent e){
-         String userName = name.getText();
-         Main.setUserName(userName);
-         User user = new User(userName, Main.money, Main.rodLevel);
-         //new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-         // new ButtonMenu(user,fishArray);
-         frame.dispose();
-         }
-         });*/
         frame.setLocation(100,100);
         frame.setSize(800,500);
         frame.setVisible(true);
