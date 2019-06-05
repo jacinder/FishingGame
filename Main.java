@@ -13,30 +13,17 @@ class Main{
    public static int rodLevel;
    private static String userName;
 
-    public static void main(String[] args){
+   public static void main(String[] args){
       String[] fishArray = {"Salmon", "Flatfish", "Squid", "Octopus", "Minnow", "Shrimp", "Carp", "Tuna", "Mackerel", "Saury"};
       Random random = new Random();
       loadFile file = new loadFile();
-      Sound("UTSS.wav", true);
-      new Intro(fishArray);
+      Sound s = new Sound();
+      s.playSound(new File("UTSS.wav"), 1.0f, true);
+      new Intro(fishArray, s);
    }
    public static void setUserName(String userName) {
       Main.userName = userName;
    }
-   public static void Sound(String file, boolean Loop){
-		Clip clip;
-		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
-			clip = AudioSystem.getClip();
-			clip.open(ais);
-			clip.start();
-
-			if (Loop) clip.loop(-1);
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
-	}
 }
 class loadFile{
    public loadFile(){
@@ -67,7 +54,7 @@ class ButtonMenu{
    JButton b4 = new JButton("HELP");
    JButton b5 = new JButton("EXIT");
 
-    public ButtonMenu(User user, String[] fishArray)
+    public ButtonMenu(User user, String[] fishArray, Sound s)
    {
       JFrame menu = new JFrame("Fishing game");
       menu.setLayout(new GridLayout(5,1));
@@ -97,7 +84,7 @@ class ButtonMenu{
               int rnd = ran.nextInt(94)+33;
               char key = (char)(rnd);
               MyLabel bar = new MyLabel(20);
-              Fishing fishingThread = new Fishing(user,fishArray,bar,key,rnd);
+              Fishing fishingThread = new Fishing(user,fishArray,bar,key,rnd,s);
               bar.setFrame(fishingThread.fishing);
           }
       });//b1 ActionListener
@@ -319,7 +306,7 @@ class Ask{
    }
 }
 class Intro{
-    public Intro(String[] fishArray){
+    public Intro(String[] fishArray, Sound s){
       JFrame frame = new JFrame("Move Label");
       JTextField name = new JTextField();
       JButton enter = new JButton("ENTER");
@@ -341,7 +328,7 @@ class Intro{
             Main.setUserName(userName);
             User user = new User(userName, Main.money, Main.rodLevel);
             //new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
-            new ButtonMenu(user,fishArray);
+            new ButtonMenu(user,fishArray, s);
             frame.dispose();
          }
       });
@@ -442,7 +429,7 @@ class Fishing{
     JButton button = new JButton("Return to home");
     char key;
 
-    Fishing (User user, String [] fishArray, MyLabel bar, char key, int rnd){
+    Fishing (User user, String [] fishArray, MyLabel bar, char key, int rnd, Sound s){
 
         this.bar = bar;
         fishing.setTitle("bar");
@@ -458,6 +445,8 @@ class Fishing{
         JFrame Message= new JFrame();
         TimerTask task = new TimerTask(){
             public void run(){
+                s.stopBgm();
+                s.playSound(new File("H.WAV"), 1.0f, false);
                 //fail message
                 fishing.dispose();
                 Message.pack();
@@ -473,13 +462,13 @@ class Fishing{
                 Message.add(button,BorderLayout.SOUTH);
                 Message.setVisible(true);
                 button.addActionListener(new ActionListener(){
-                  public void actionPerformed(ActionEvent e){
-                      Message.dispose();
-                  }
+                public void actionPerformed(ActionEvent e){
+                    Message.dispose();
+                }
               });
             }
         };
-        
+
         timer.schedule(task, 10000);
 
 
