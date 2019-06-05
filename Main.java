@@ -450,29 +450,36 @@ class Fishing{
         fishing.setLayout(new GridLayout(3,1));
 
         JLabel text = new JLabel("<html> Press "+key+" to wind your fishing rod</html>");
+        text.setFont(text.getFont().deriveFont(30.0f));
+        text.setVerticalAlignment(SwingConstants.BOTTOM);
+        text.setHorizontalAlignment(SwingConstants.CENTER);
         fishing.add(text);
         Timer timer = new Timer();
+        JFrame Message= new JFrame();
         TimerTask task = new TimerTask(){
             public void run(){
                 //fail message
                 fishing.dispose();
-                JFrame Message = new JFrame();
                 Message.pack();
                 Message.setLocation(100,100);
                 Message.setSize(800,500);
                 //Message.setLayout();
-                JLabel letter2 = new JLabel("fail!!!!!");
+                JLabel letter2 = new JLabel("fail:(");
+                letter2.setFont(letter2.getFont().deriveFont(25.0f));
+                letter2.setVerticalAlignment(SwingConstants.CENTER);
+                letter2.setHorizontalAlignment(SwingConstants.CENTER);
                 JButton button = new JButton("Return to home");
                 Message.add(letter2,BorderLayout.CENTER);
                 Message.add(button,BorderLayout.SOUTH);
                 Message.setVisible(true);
+                button.addActionListener(new ActionListener(){
+                  public void actionPerformed(ActionEvent e){
+                      Message.dispose();
+                  }
+              });
             }
         };
-        button.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                fishing.dispose();
-            }
-        });
+        
         timer.schedule(task, 10000);
 
 
@@ -543,7 +550,10 @@ class MyLabel extends JLabel{
                 Message.pack();
                 Message.setLocation(100,100);
                 Message.setSize(800,500);
-                JLabel letter = new JLabel("Success!!! \n The fish you just caught: " + fishArray[rnd%10]);
+                JLabel letter = new JLabel("Success:D \n The fish you just caught: " + fishArray[rnd%10]);
+                letter.setFont(letter.getFont().deriveFont(25.0f));
+                letter.setVerticalAlignment(SwingConstants.CENTER);
+                letter.setHorizontalAlignment(SwingConstants.CENTER);
                 button = new JButton("Return to home");
                 Message.add(letter,BorderLayout.CENTER);
                 Message.add(button,BorderLayout.SOUTH);
