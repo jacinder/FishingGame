@@ -13,7 +13,7 @@ class Rod{
 
     public int getPrice(){
 		return rodPrice;
-	}
+  }
 
     public void setName(int selectRod){
         if(selectRod == 1)
@@ -23,7 +23,7 @@ class Rod{
         if(selectRod == 3)
             this.rodName = "고급";
     }
-    
+
     public String getName(){
         return rodName;
     }
