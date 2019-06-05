@@ -578,6 +578,7 @@ class MyLabel extends JLabel{
       String fishImage=fishName+".jpg";
 
 
+
         if(barSize==maxBarSize){
           fishingFrame.dispose();
 
