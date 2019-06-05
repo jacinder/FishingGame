@@ -90,7 +90,7 @@ class ButtonMenu{
       });//b1 ActionListener
       b2.addActionListener(new ActionListener(){
          public void actionPerformed(ActionEvent e){
-            new Shopping(user);
+            new Shopping(user, menu);
          }
       });//b2 ActionListener
       b3.addActionListener(new ActionListener(){
@@ -113,100 +113,141 @@ class ButtonMenu{
 
 
 class Shopping{
-   JButton beginner = new JButton("beginner");
-   JLabel beginnerPrice = new JLabel("                 100000");
-   JButton intermediate = new JButton("intermediate");
-   JLabel intermediatePrice = new JLabel("                 500000");
-   JButton advanced = new JButton("advanced");
-   JLabel advancedPrice = new JLabel("                 1000000");
-   JButton tuition = new JButton("Tuition");
-   JLabel tuitionPrice = new JLabel("                 3000000");
-   public Shopping(User user){
-      JFrame shop = new JFrame("SHOP");
-      shop.setLocation(100,100);
-      shop.setSize(800,500);
-      shop.setLayout(new GridLayout(1,4));
-
-      beginner.setBackground(new Color(92,209,229));
-      beginner.setOpaque(true); beginner.setBorderPainted(false);
-      intermediate.setBackground(new Color(103,153,255));
-      intermediate.setOpaque(true); intermediate.setBorderPainted(false);
-      advanced.setBackground(new Color(107,102,255));
-      advanced.setOpaque(true); advanced.setBorderPainted(false);
-      tuition.setBackground(new Color(200,200,255));
-      tuition.setOpaque(true); tuition.setBorderPainted(false);
-
-
-
-      JPanel panel1 = new JPanel();
-      panel1.setLayout(new GridLayout(2,1));
-      panel1.add(beginner);
-      panel1.add(beginnerPrice);
-      JPanel panel2 = new JPanel();
-      panel2.setLayout(new GridLayout(2,1));
-      panel2.add(intermediate);
-      panel2.add(intermediatePrice);
-      JPanel panel3 = new JPanel();
-      panel3.setLayout(new GridLayout(2,1));
-      panel3.add(advanced);
-      panel3.add(advancedPrice);
-      JPanel panel4 = new JPanel();
-      panel4.setLayout(new GridLayout(2,1));
-      panel4.add(tuition);
-      panel4.add(tuitionPrice);
-
-      shop.add(panel1);
-      shop.add(panel2);
-      shop.add(panel3);
-      shop.add(panel4);
-
-      shop.setVisible(true);
-
-      beginner.addActionListener(new ActionListener(){
-         public void actionPerformed(ActionEvent e){
-            if(user.getMoney()>100000){
-               user.setMoney(-100000);
-               user.setRodLevel(1);
-               new Print("Shopping","Success to buy beginner fishing rod");
+    JLabel userName;
+    JLabel userMoney;
+    JLabel userRodLevel;
+    JLabel shopName;
+    
+    JButton beginner = new JButton("beginner");
+    JLabel beginnerPrice = new JLabel("                 100000");
+    JButton intermediate = new JButton("intermediate");
+    JLabel intermediatePrice = new JLabel("                 500000");
+    JButton advanced = new JButton("advanced");
+    JLabel advancedPrice = new JLabel("                 1000000");
+    JButton tuition = new JButton("Tuition");
+    JLabel tuitionPrice = new JLabel("                 3000000");
+    
+    
+    public Shopping(User user, JFrame menu){
+        userName = new JLabel("User Name: " + user.getName());
+        userMoney = new JLabel("User Money: " + user.getMoney());
+        userRodLevel = new JLabel("User RodLevel: " + user.getRodLevel());
+        shopName = new JLabel("                  SHOP");
+        JFrame shop = new JFrame("SHOP");
+        shop.setLocation(100,100);
+        shop.setSize(800,500);
+        shop.setLayout(new GridLayout(1,4));
+        
+        userMoney.setBackground(new Color(92,209,229));
+        
+        
+        
+        
+        shopName.setForeground(new Color(250,0,0));
+        shopName.setOpaque(true); beginner.setBorderPainted(false);
+        
+        beginner.setBackground(new Color(92,209,229));
+        beginner.setOpaque(true); beginner.setBorderPainted(false);
+        intermediate.setBackground(new Color(103,153,255));
+        intermediate.setOpaque(true); intermediate.setBorderPainted(false);
+        advanced.setBackground(new Color(107,102,255));
+        advanced.setOpaque(true); advanced.setBorderPainted(false);
+        tuition.setBackground(new Color(200,200,255));
+        tuition.setOpaque(true); tuition.setBorderPainted(false);
+        
+        JPanel panel1 = new JPanel();
+        panel1.setLayout(new GridLayout(3,1));
+        panel1.add(userName);
+        panel1.add(beginner);
+        panel1.add(beginnerPrice);
+        JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridLayout(3,1));
+        panel2.add(userMoney);
+        panel2.add(intermediate);
+        panel2.add(intermediatePrice);
+        JPanel panel3 = new JPanel();
+        panel3.setLayout(new GridLayout(3,1));
+        panel3.add(userRodLevel);
+        panel3.add(advanced);
+        panel3.add(advancedPrice);
+        JPanel panel4 = new JPanel();
+        panel4.setLayout(new GridLayout(3,1));
+        panel4.add(shopName);
+        panel4.add(tuition);
+        panel4.add(tuitionPrice);
+        
+        shop.add(panel1);
+        shop.add(panel2);
+        shop.add(panel3);
+        shop.add(panel4);
+        
+        shop.setVisible(true);
+        
+        
+        beginner.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(user.getMoney()>100000){
+                    user.setMoney(-100000);
+                    user.setRodLevel(1);
+                    new Print("Shopping","Success to buy beginner fishing rod");
+                    shop.dispose();
+                }
+                else{
+                    new Print("Shopping","Not enough balance!");
+                    shop.dispose();
+                }
             }
-            else
-               new Print("Shopping","Not enough balance!");
-         }
-      });
-      intermediate.addActionListener(new ActionListener(){
-         public void actionPerformed(ActionEvent e){
-            if(user.getMoney()>500000){
-               user.setMoney(-500000);
-               user.setRodLevel(2);
-               new Print("Shopping","Success to buy intermediate fishing rod");
+        });
+        intermediate.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(user.getMoney()>500000){
+                    user.setMoney(-500000);
+                    user.setRodLevel(2);
+                    new Print("Shopping","Success to buy intermediate fishing rod");
+                    shop.dispose();
+                }
+                else{
+                    new Print("Shopping","Not enough balance!");
+                    shop.dispose();
+                }
             }
-            else
-               new Print("Shopping","Not enough balance!");
-         }
-      });
-      advanced.addActionListener(new ActionListener(){
-         public void actionPerformed(ActionEvent e){
-            if(user.getMoney()>1000000){
-               user.setMoney(-1000000);
-               user.setRodLevel(3);
-               new Print("Shopping","Success to buy advanced fishing rod");
+        });
+        advanced.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(user.getMoney()>1000000){
+                    user.setMoney(-1000000);
+                    user.setRodLevel(3);
+                    new Print("Shopping","Success to buy advanced fishing rod");
+                    shop.dispose();
+                }
+                else{
+                    new Print("Shopping","Not enough balance!");
+                    shop.dispose();
+                }
             }
-            else
-               new Print("Shopping","Not enough balance!");
-         }
-      });
-       tuition.addActionListener(new ActionListener(){
-           public void actionPerformed(ActionEvent e){
-               if(user.getMoney()>3000000){
-                   user.setMoney(-3000000);
-
-                   new Print("Shopping","Success to tuition for Uni");
-               }
-               else
-                   new Print("Shopping","Not enough balance!");
-           }
-       });
-   }
+        });
+        tuition.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                if(user.getMoney()>30000){
+                    menu.dispose();
+                    shop.dispose();
+                    user.setMoney(-30000);
+                    // new Print("YOU MADE IT","OMG YOU GOT ENOUGH MONEY FOR TUITION FOR HANDONG");
+                    
+                    Timer timer = new Timer();
+                    TimerTask task = new TimerTask(){
+                        public void run(){
+                            //실패메세지 남기기
+                            new Ending();
+                        }
+                    };
+                    timer.schedule(task, 800);
+                }
+                else
+                    new Print("Shopping","Not enough balance!");
+            }
+        });
+    }
 }
 class SaveFile{
    public SaveFile(User user){
@@ -533,7 +574,9 @@ class MyLabel extends JLabel{
     synchronized void fill(User user, String[] fishArray, int rnd, Timer timer){
       String fishName=fishArray[rnd%10];
       double fishWeight = rnd%10;
+        int fishPrice=(int)fishWeight*10;
       String fishImage=fishName+".jpg";
+        
 
         if(barSize==maxBarSize){
           fishingFrame.dispose();
@@ -544,7 +587,7 @@ class MyLabel extends JLabel{
                 Message.pack();
 
                 button = new JButton("Return to home");
-                panel = new MyPanel(fishName,fishImage,fishWeight);
+                panel = new MyPanel(fishName,fishImage,fishWeight,fishPrice);
 
                 Message.add(button,BorderLayout.SOUTH);
                 Message.add(panel,BorderLayout.CENTER);
@@ -585,13 +628,15 @@ class MyLabel extends JLabel{
     class MyPanel extends JPanel{
       String fishName,fishImage;
       double fishWeight;
+      int fishPrice;
       ImageIcon icon;
       Image img;
 
-      MyPanel(String fishName,String fishImage, double fishWeight){
+      MyPanel(String fishName,String fishImage, double fishWeight,int fishPrice){
         this.fishName=fishName;
         this.fishImage=fishImage;
         this.fishWeight=fishWeight;
+        this.fishPrice=fishPrice;
         icon=new ImageIcon(fishImage);
         img=icon.getImage();
       }
@@ -604,8 +649,7 @@ class MyLabel extends JLabel{
          g.drawString("       Success~!", 250, 40);
          g.setFont(new Font("secondFont",Font.PLAIN,25));
          g.setColor(Color.BLACK);
-         g.drawString( "The fish you just caught: "+fishName,10,430);
-         g.drawString("       Weight: "+fishWeight+" kg",500,430);
+         g.drawString( "The fish you just caught: "+fishName+"  Weight: "+fishWeight+" kg  Price: "+fishPrice+" Won",10,430);
       }
    }
 
@@ -628,3 +672,54 @@ class ConsumerThread extends Thread{
         }
     }
 }
+
+class Ending{
+    public Ending(){
+        JFrame frame = new JFrame("Move Label");
+        //JTextField name = new JTextField();
+        //JButton enter = new JButton("ENTER");
+        MyPanel panel=new MyPanel();
+        
+        //enter.setBackground(new Color(103,153,255));
+        //enter.setOpaque(true); enter.setBorderPainted(false);
+        
+        frame.setTitle("Ending");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        frame.add(panel,BorderLayout.CENTER);
+        // frame.add(name,BorderLayout.SOUTH);
+        //  frame.add(enter,BorderLayout.EAST);
+        
+        /*enter.addActionListener(new ActionListener(){
+         public void actionPerformed(ActionEvent e){
+         String userName = name.getText();
+         Main.setUserName(userName);
+         User user = new User(userName, Main.money, Main.rodLevel);
+         //new Print("intro","In Handong University Electronic Engineering Department " + userName + "starts fishing to earn money for insufficient tuition. . . .");
+         // new ButtonMenu(user,fishArray);
+         frame.dispose();
+         }
+         });*/
+        frame.setLocation(100,100);
+        frame.setSize(800,500);
+        frame.setVisible(true);
+    }
+    
+    class MyPanel extends JPanel{
+        ImageIcon icon=new ImageIcon("handong.png");
+        Image img=icon.getImage();
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
+            g.drawImage(img, 0, 0, this.getWidth(), this.getHeight(), this);
+            g.setFont(new Font("myFont",Font.BOLD ,50));
+            g.setColor(Color.BLACK);
+            g.drawString("Handong University", 140, 70);
+            g.setFont(new Font("secondFont",Font.PLAIN,20));
+            g.setColor(Color.WHITE);
+            g.drawString("To school..",10,430);
+        }
+    }
+}
+
+
+
