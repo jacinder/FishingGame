@@ -472,7 +472,7 @@ class Fishing{
         timer.schedule(task, 10000);
 
 
-        bar.setBackground(Color.ORANGE);
+        bar.setBackground(new Color(212,244,250));
         bar.setOpaque(true);
         bar.setLocation(20, 50);
         bar.setSize(300,20);
@@ -523,7 +523,7 @@ class MyLabel extends JLabel{
     }
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.setColor(Color.darkGray);
+        g.setColor(new Color(0,216,255));
         int width =(int)(((double)(this.getWidth()))/maxBarSize*barSize);
         if(width==0) return;
         g.fillRect(0,0,width,this.getHeight());
