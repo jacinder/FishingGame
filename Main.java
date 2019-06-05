@@ -443,7 +443,7 @@ class Fishing{
                 JFrame Message = new JFrame();
                 Message.pack();
                 Message.setLocation(100,100);
-                Message.setSize(350,200);
+                Message.setSize(800,500);
                 //Message.setLayout();
                 JLabel letter2 = new JLabel("fail!!!!!");
                 JButton button = new JButton("Return to home");
@@ -452,7 +452,13 @@ class Fishing{
                 Message.setVisible(true);
             }
         };
-        timer.schedule(task, 4000);
+        button.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                fishing.dispose();
+            }
+        });
+        timer.schedule(task, 10000);
+
 
         bar.setBackground(Color.ORANGE);
         bar.setOpaque(true);
@@ -475,7 +481,7 @@ class Fishing{
             @Override
             public void keyPressed(KeyEvent ke) {
                 if(ke.getKeyChar() == key)
-                    bar.fill(user, fishArray, rnd);
+                    bar.fill(user, fishArray, rnd, timer);
             }
             @Override
             public void keyReleased(KeyEvent ke) {
@@ -483,7 +489,7 @@ class Fishing{
         });
         //fishing.setLocationRelativeTo(null);
         fishing.setLocation(100,100);
-        fishing.setSize(350,200);
+        fishing.setSize(800,500);
         fishing.setVisible(true);
         fishing.requestFocus();//키 처리권 부여
         ConsumerThread th = new ConsumerThread(bar);//스레드 생성
@@ -494,8 +500,9 @@ class Fishing{
 class MyLabel extends JLabel{
     int barSize=0;//바의 크기
     int maxBarSize; //바의 맥스 사이즈
-
     JFrame fishingFrame;
+    JButton button;
+    JFrame Message = new JFrame();
     MyLabel(int maxBarSize){
         this.maxBarSize=maxBarSize;
     }
@@ -509,17 +516,32 @@ class MyLabel extends JLabel{
         if(width==0) return;//크기가 0이면 바를 그릴 필요 없음
         g.fillRect(0,0,width,this.getHeight());
     }
-    synchronized void fill(User user, String[] fishArray, int rnd){
-        if(barSize==maxBarSize){
-            try{
+    synchronized void fill(User user, String[] fishArray, int rnd, Timer timer){
 
-                fishingFrame.dispose();
+        if(barSize==maxBarSize){
+          fishingFrame.dispose();
+
+            try{
+                timer.cancel();
                 user.setMoney (rnd*10000);
-            }
+                Message.pack();
+                Message.setLocation(100,100);
+                Message.setSize(800,500);
+                JLabel letter = new JLabel("Success!!! \n The fish you just caught: " + fishArray[rnd%10]);
+                button = new JButton("Return to home");
+                Message.add(letter,BorderLayout.CENTER);
+                Message.add(button,BorderLayout.SOUTH);
+                Message.setVisible(true);
+              }
             catch(Exception e){
-                return;
+              System.out.println(e);
             }
-        }
+            button.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    Message.dispose();
+                }
+            });
+          }
         barSize++;
         this.repaint();//바 다시그리기
         this.notify();//기다리는 ConsumerThread 스레드 깨우기
