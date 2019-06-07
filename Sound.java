@@ -1,6 +1,6 @@
-import java.awt.*;
-import javax.sound.sampled.*;
 import java.io.*;
+import javax.sound.sampled.*;
+
 
 public class Sound{
   Clip bgmclip;
